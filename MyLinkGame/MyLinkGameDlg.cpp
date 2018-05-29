@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 
 #include "block.h"
+#include "Rankdlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -169,4 +170,9 @@ void CMyLinkGameDlg::OnBnClickedButton1()
 void CMyLinkGameDlg::OnBnClickedButton2()
 {
 	// TODO: 在此添加控件通知处理程序代码
+
+	Rankdlg r = new Rankdlg();
+	r.DoModal();
+
+
 }
