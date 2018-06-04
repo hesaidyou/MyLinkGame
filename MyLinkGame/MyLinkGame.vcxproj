@@ -189,7 +189,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="block.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockButton.h" />
     <ClInclude Include="MyLinkGame.h" />
     <ClInclude Include="MyLinkGameDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -197,9 +198,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="block.cpp">
+    <ClCompile Include="Block.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BlockButton.cpp" />
     <ClCompile Include="MyLinkGame.cpp" />
     <ClCompile Include="MyLinkGameDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
