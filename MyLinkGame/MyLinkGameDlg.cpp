@@ -7,12 +7,14 @@
 #include "MyLinkGameDlg.h"
 #include "afxdialogex.h"
 
-#include "block.h"
+#include "BlockButton.h"
+#include "Block.h"
+
+#define IDC_BLOCK 10000
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -158,11 +160,67 @@ HCURSOR CMyLinkGameDlg::OnQueryDragIcon()
 
 
 
+
+
+//根据map构造按钮
+void CMyLinkGameDlg::ShowMap(int block[ROW][COLUMN]){
+	int i, j;
+	CPoint p;
+	CString str = _T("");
+	////清除原有按钮
+	//for (i = 0; i<m_btnGroup.GetSize(); i++)
+	//	delete (CLLKanButton *)m_btnGroup.GetAt(i);
+	//m_btnGroup.RemoveAll();
+	//添加新按钮
+	for (i = 1; i <= ROW - 2; i++)
+		for (j = 1; j <= COLUMN - 2; j++)
+		{
+			p.x = i;
+			p.y = j;
+			//将按钮放入m_btnGroup指针数组中
+			m_btnGroup.Add(new CBlockButton(block[i][j], p));
+		}
+	//显示按钮
+	for (i = 0; i<(ROW - 2)*(COLUMN - 2); i++)
+	{
+		CBlockButton *btn = (CBlockButton *)m_btnGroup.GetAt(i);
+		//构造按钮的大小和位置
+		btn->Create(str, WS_CHILD | BS_BITMAP | WS_VISIBLE,
+			CRect(70 + (i % (COLUMN - 2)) * 50, 70 + (i / (ROW - 2)) * 50,
+				120 + (i % (COLUMN - 2)) * 50, 120 + (i / (ROW - 2)) * 50), this,
+			IDC_BLOCK + i);
+
+		if (btn->m_ID)//如果为0则不显示
+		{
+			//尽量用绝对路径
+			str.Format(_T("res\\%d.bmp"), btn->m_ID);
+			HBITMAP m_fkBmp = (HBITMAP)::LoadImage
+			(AfxGetInstanceHandle(),
+				str, IMAGE_BITMAP, 0, 0,
+				LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+			//加载图片
+			if (m_fkBmp == NULL)
+				if (MessageBox(_T(" 缺 少 图 片 资 源! "), _T(" 错 误"),
+					MB_ICONERROR | MB_OK) == IDOK)
+				{
+					CDialog::OnCancel();
+					return;
+				}
+			btn->SetBitmap(m_fkBmp);
+			btn->ShowWindow(SW_SHOW);
+		}
+		else
+			btn->ShowWindow(SW_HIDE);
+
+	}
+}
+
 void CMyLinkGameDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-
-
+	Block b;
+	b.CreatBlocks(1);
+	ShowMap(b.block);
 }
 
 
