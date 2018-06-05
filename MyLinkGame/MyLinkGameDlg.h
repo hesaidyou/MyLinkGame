@@ -4,9 +4,7 @@
 
 #pragma once
 
-//行、列
-#define ROW 10+2
-#define COLUMN 14+2
+
 
 // CMyLinkGameDlg 对话框
 class CMyLinkGameDlg : public CDialogEx
@@ -35,11 +33,10 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	void ShowMap(int block[ROW][COLUMN]);
+	
 
 
-private:
-	CPtrArray m_btnGroup; //Button 组
+
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();

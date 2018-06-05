@@ -45,8 +45,8 @@
     <ClInclude Include="rank.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Rankdlg.h">
-      <Filter>资源文件</Filter>
+    <ClInclude Include="GameDlg.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,8 +71,8 @@
     <ClCompile Include="rank.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Rankdlg.cpp">
-      <Filter>资源文件</Filter>
+    <ClCompile Include="GameDlg.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MyLinkGame.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\GameDlg.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
