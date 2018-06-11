@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 //行、列
 #define ROW 10+2
@@ -38,7 +39,12 @@ public:
 
 	void ShowMap();
 
+	BOOL IsWin(void);
+
 	//void ShowMap(int block[ROW][COLUMN]);
+
+//	static UINT TimeThread(LPVOID pParam);		//时间线程/时间条
+
 
 
 private:
@@ -46,4 +52,25 @@ private:
 
 public:
 	int block[ROW][COLUMN];
+	 CProgressCtrl m_ctrlProgress;
+	UINT_PTR timer;
+	UINT_PTR timer2;
+
+	int m_time; //剩余时间
+	int m_score; //记录分数
+	BOOL isThreadPause;
+	CWinThread*  PlayerThread;
+
+//	int progress;
+
+	afx_msg
+		void OnBnbegin();
+	void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
+
+
+
+
+
+
+	afx_msg void OnBnClickedButton2();
 };

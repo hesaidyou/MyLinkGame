@@ -15,13 +15,18 @@
 
 // GameDlg 对话框
 
+int progress = 0;
+
 IMPLEMENT_DYNAMIC(GameDlg, CDialog)
+
 
 GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_GAMEDLG, pParent)
 {
 	//::SetBackgroundImage(IDB_BITMAP1);
 	::SetWindowPos(this->m_hWnd, HWND_BOTTOM, 0, 0, 1280, 1000, SWP_NOZORDER);
+
+
 }
 
 GameDlg::~GameDlg()
@@ -31,11 +36,14 @@ GameDlg::~GameDlg()
 void GameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_PROGRESS1, m_ctrlProgress);
 }
 
 
 BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &GameDlg::OnBnClickedButton1)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_PROGRESS1, &GameDlg::OnNMCustomdrawProgress1)
+	ON_BN_CLICKED(IDC_BUTTON2, &GameDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -45,8 +53,18 @@ END_MESSAGE_MAP()
 void GameDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
+
+	timer=SetTimer(1, 1000, NULL);//设置进度条更新时钟
+
+	isThreadPause = false;
+	m_time = 30;
+	m_score = 0;
+	m_ctrlProgress.SetRange32(1, 30000);
+
+	OnBnbegin();
 	CreatBlocks(2);
 	ShowMap();
+
 }
 
 //创建游戏
@@ -621,4 +639,114 @@ void GameDlg::ShowMap() {
 	//		btn->ShowWindow(SW_HIDE);
 
 	//}
+}
+
+UINT TimeThread(LPVOID p)
+{
+	CProgressCtrl *pw;
+	pw = (CProgressCtrl*)p;
+	int i;
+	//这里可以进行费时的操作，同时显示进度
+
+	for (i = 0; i<30000; i++)
+	{
+		pw->SetPos(i);
+		::Sleep(10);
+	}
+
+	return 0;
+
+}
+
+
+void GameDlg::OnBnbegin()
+{
+
+	PlayerThread=AfxBeginThread(TimeThread, &m_ctrlProgress);
+}
+
+
+void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+}
+
+BOOL GameDlg::IsWin(void)
+{
+	//时间结束，没有过关
+	if (m_time == 0)
+	{
+		KillTimer(1);
+		MessageBox(_T("Game Over !"), _T("时间结束"));
+		m_time = 30;
+		//清除桌面的按钮
+		for (int i = 0; i<m_btnGroup.GetSize(); i++)
+			delete (CBlockButton *)m_btnGroup.GetAt(i);
+		m_btnGroup.RemoveAll();
+		//记录分数
+
+	//	CLLKAddDlg addData;
+	//	addData.DoModal();
+
+		return FALSE;
+	}
+
+	for (int i = 1; i <  ROW - 1; i++)
+		for (int j = 1; j < COLUMN-1; j++)
+		{
+			if (block[i][j] != 0)
+				return FALSE;
+		}
+	//过关后停止计时
+	KillTimer(1);
+
+
+
+	return TRUE;
+
+}
+
+
+/*void GameDlg::OnTimer(UINT nIDEvent)
+{
+	
+		m_ctrlProgress.SetPos(progress);
+		if (progress == 100)
+		{
+			KillTimer(timer);
+		}
+	
+
+	CDialog::OnTimer(nIDEvent);
+
+}*/
+
+/*
+void GameDlg::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+	CDialog::OnShowWindow(bShow, nStatus);
+
+	// TODO: Add your message handler code here
+	this->KillTimer(1);
+	this->SetTimer(1, 10000, NULL);
+	m_ctrlProgress.SetRange(1, 1000);
+}
+ */
+
+
+//暂停
+void GameDlg::OnBnClickedButton2()
+{
+	if (!isThreadPause) {
+
+		PlayerThread->SuspendThread();     //挂起进程，相当于暂停播放
+		isThreadPause = true;
+	}
+	else
+	{
+		PlayerThread->ResumeThread();
+		isThreadPause = false;
+	}
 }
