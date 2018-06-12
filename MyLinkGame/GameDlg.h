@@ -1,9 +1,26 @@
 #pragma once
+#ifndef  GAMEDLG_H
+#define GAMEDLG_H
 #include "afxcmn.h"
+
+
 
 //行、列
 #define ROW 10+2
 #define COLUMN 14+2
+//连连看游戏区界面，按钮起始位置
+#define XF 70
+#define XS 70
+#define YF 30
+#define YS 70
+#define LBLOCK 65
+#define HBLOCK 60
+
+
+struct Point {
+	int x;
+	int y;
+};
 
 // GameDlg 对话框
 
@@ -38,6 +55,8 @@ public:
 	void Recreate();
 
 	void ShowMap();
+	//画线
+	void DrawLine();
 
 	BOOL IsWin(void);
 
@@ -73,4 +92,10 @@ public:
 
 
 	afx_msg void OnBnClickedButton2();
+
+	Point linkline[4];
 };
+
+
+
+#endif // ! GAMEDLG_H

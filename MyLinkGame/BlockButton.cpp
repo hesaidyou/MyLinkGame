@@ -118,6 +118,11 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		//parent->map[ms_firstBtn->m_location.x][ms_firstBtn->m_location.y] = 0;
 		//parent->map[ms_secondBtn->m_location.x][ms_secondBtn->m_location.y] = 0;
 		ms_firstBtn = ms_secondBtn = NULL;
+
+		//画线
+		parent->DrawLine();
+		parent->UpdateWindow();
+
 		PlaySound(_T("H:\\C++code\\LLKan\\res\\elec.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 	//两个同类型的按钮不可连接
