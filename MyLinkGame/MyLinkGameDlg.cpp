@@ -7,13 +7,11 @@
 #include "MyLinkGameDlg.h"
 #include "afxdialogex.h"
 
-#include "block.h"
-#include "Rankdlg.h"
+#include "GameDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -177,17 +175,14 @@ HCURSOR CMyLinkGameDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CMyLinkGameDlg::OnBnClickedButton1()
-{
-	/*struct AddrRec *shead = NULL;
-	struct AddrRec *p;
-	p = (struct AddrRec*) malloc(LEN);
-*/
-	AfxMessageBox(_T("登录成功"));
-}
 
 
 void CMyLinkGameDlg::OnBnClickedButton2()
+
+
+
+
+void CMyLinkGameDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
@@ -234,7 +229,7 @@ void CMyLinkGameDlg::OnStnClickedStatic3()
 	{
 		printf("\nFailed to open the file.\n");
 		exit(1);
-	}
+}
 
 	fscanf(inFile, "%s %s %s %s %s %s %s %s\n", a, b, c, d,e,f,g,h);
 	strcpy(p->name, a);
@@ -250,7 +245,7 @@ void CMyLinkGameDlg::OnStnClickedStatic3()
 	phead = shead;
 
 	while (fscanf(inFile, "%s %s %s %s %s %s %s %s\n", a, b, c, d,e,f,g,h) != EOF)
-	{
+{
 		p = (struct linkgame*) malloc(LEN);
 		strcpy(p->name, a);
 		strcpy(p->password, b);

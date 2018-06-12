@@ -6,13 +6,14 @@
 #include "afxwin.h"
 
 
+
 // CMyLinkGameDlg 对话框
 class CMyLinkGameDlg : public CDialogEx
 {
 // 构造
 public:
 	CMyLinkGameDlg(CWnd* pParent = NULL);	// 标准构造函数
-
+	
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MYLINKGAME_DIALOG };
@@ -32,6 +33,11 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	
+
+
+
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();

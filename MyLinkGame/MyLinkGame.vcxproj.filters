@@ -33,7 +33,10 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="block.h">
+    <ClInclude Include="BlockButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
@@ -42,8 +45,8 @@
     <ClInclude Include="rank.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Rankdlg.h">
-      <Filter>资源文件</Filter>
+    <ClInclude Include="GameDlg.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,7 +59,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="block.cpp">
+    <ClCompile Include="BlockButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
@@ -65,8 +71,8 @@
     <ClCompile Include="rank.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Rankdlg.cpp">
-      <Filter>资源文件</Filter>
+    <ClCompile Include="GameDlg.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
