@@ -59,7 +59,7 @@ void GameDlg::OnBnClickedButton1()
 	isThreadPause = false;
 	m_time = 30;
 	m_score = 0;
-	m_ctrlProgress.SetRange32(1, 30000);
+	m_ctrlProgress.SetRange32(1, 3000);
 
 	OnBnbegin();
 	CreatBlocks(2);
@@ -648,7 +648,7 @@ UINT TimeThread(LPVOID p)
 	int i;
 	//这里可以进行费时的操作，同时显示进度
 
-	for (i = 0; i<30000; i++)
+	for (i = 0; i<10000; i++)
 	{
 		pw->SetPos(i);
 		::Sleep(10);
