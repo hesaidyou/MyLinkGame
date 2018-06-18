@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxwin.h"
 
 
 
@@ -40,4 +41,12 @@ public:
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
+	void CMyLinkGameDlg::OnStnClickedStatic1();
+	void CMyLinkGameDlg::OnStnClickedStatic2();
+	void CMyLinkGameDlg::OnStnClickedStatic3();
+	CEdit m_edit;
+	CEdit m_edit2;
+	CStatic m_static1;
+	CStatic m_static2;
+	CStatic m_static3;
 };

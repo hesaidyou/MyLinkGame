@@ -34,7 +34,7 @@ GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 }
 
 
-}
+
 
 GameDlg::~GameDlg()
 {
@@ -824,7 +824,7 @@ void GameDlg::OnBnClickedButton2()
 		isThreadPause = false;
 	}
 }
-}
+
 
 //»­Ïß
 void GameDlg::DrawLine() {
