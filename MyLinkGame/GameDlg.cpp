@@ -49,6 +49,7 @@ GameDlg::~GameDlg()
 void GameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_PROGRESS1, m_ctrlProgress);
 }
 
 
@@ -56,6 +57,8 @@ BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTONRECREAT, &GameDlg::OnBnClickedButtonrecreat)
 	ON_BN_CLICKED(IDC_BUTTONHINT, &GameDlg::OnBnClickedButtonhint)
+	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BUTTONPAUSE, &GameDlg::OnBnClickedButtonpause)
 END_MESSAGE_MAP()
 
 
@@ -827,6 +830,17 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 960);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
+
+	m_bPlaying = true;
+	m_pPause = false;
+	m_ctrlProgress.SetRange(0, 300);
+	m_ctrlProgress.SetStep(-1);
+	m_ctrlProgress.SetPos(300);
+
+	timer = SetTimer(1, 1000, NULL);//设置进度条更新时钟
+									//	m_time = 30;
+	m_score = 0;
+
 	CreatBlocks(2);
 	ShowMap();
 
@@ -885,3 +899,29 @@ void GameDlg::OnBnClickedButtonhint()
 //		}
 //	}
 //}
+
+void GameDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (m_pPause == false) {
+
+		if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
+		{
+			m_ctrlProgress.StepIt();
+		}
+
+	}
+	CDialog::OnTimer(nIDEvent);
+}
+
+
+void GameDlg::OnBnClickedButtonpause()
+{
+	if (m_bPlaying && !m_pPause) {
+		m_bPlaying = false;
+		m_pPause = true;
+	}
+	else {
+		m_pPause = false;
+		m_bPlaying = true;
+	}
+}

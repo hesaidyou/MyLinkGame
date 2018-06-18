@@ -20,6 +20,8 @@
 //块高度
 #define HBLOCK 60
 
+#define PLAY_TIMER_ID 1
+
 
 struct Point {
 	int x;
@@ -72,6 +74,12 @@ public:
 
 private:
 	CPtrArray m_btnGroup; //Button 组
+	BOOL m_bPlaying;
+	BOOL m_pPause;
+	CProgressCtrl m_ctrlProgress;
+	UINT_PTR timer;
+	int m_score; //记录分数
+
 
 public:
 	int block[ROW][COLUMN];
@@ -82,6 +90,13 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonrecreat();
 	afx_msg void OnBnClickedButtonhint();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+
+
+
+
+	afx_msg void OnBnClickedButtonpause();
 };
 
 
