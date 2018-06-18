@@ -2,7 +2,7 @@
 #ifndef  GAMEDLG_H
 #define GAMEDLG_H
 #include "afxcmn.h"
-
+#include "MyProgress.h"
 
 
 //行、列
@@ -76,10 +76,10 @@ private:
 	CPtrArray m_btnGroup; //Button 组
 	BOOL m_bPlaying;
 	BOOL m_pPause;
-	CProgressCtrl m_ctrlProgress;
+	MyProgress m_ctrlProgress;
 	UINT_PTR timer;
 	int m_score; //记录分数
-
+	int m_time;
 
 public:
 	int block[ROW][COLUMN];
@@ -93,10 +93,10 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 
-
-
-
 	afx_msg void OnBnClickedButtonpause();
+	void OnPaintTime();
+
+	BOOL IsWin();
 };
 
 

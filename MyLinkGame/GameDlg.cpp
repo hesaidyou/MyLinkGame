@@ -168,7 +168,7 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 				else if (block[j][i] != mytype) {
 					if (block[j][i] != 0) {
 						break;
-					}//
+					}
 
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
@@ -674,12 +674,9 @@ void GameDlg::Recreate() {
 
 	*/
 
+	m_time = m_time - 10;
+	m_ctrlProgress.OffsetPos(-10);
 
-	/*
-	然后就是CString的操作
-	每选择重排一次，积分扣十分或者多少分
-
-	*/
 }
 
 //根据map构造按钮
@@ -823,6 +820,7 @@ HBRUSH GameDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 BOOL GameDlg::OnInitDialog()
 {
+
 	CDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
@@ -830,16 +828,16 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 960);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
-
 	m_bPlaying = true;
 	m_pPause = false;
-	m_ctrlProgress.SetRange(0, 300);
+	m_ctrlProgress.SetRange(0, 200);
 	m_ctrlProgress.SetStep(-1);
 	m_ctrlProgress.SetPos(300);
 
 	timer = SetTimer(1, 1000, NULL);//设置进度条更新时钟
 									//	m_time = 30;
 	m_score = 0;
+	m_time = 200;
 
 	CreatBlocks(2);
 	ShowMap();
@@ -902,15 +900,62 @@ void GameDlg::OnBnClickedButtonhint()
 
 void GameDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	if (m_pPause == false) {
-
-		if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
-		{
-			m_ctrlProgress.StepIt();
-		}
-
+	if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
+	{
+		m_ctrlProgress.StepIt();
 	}
+	
+	m_time--;
+	//调用重画函数
+
+	this->OnPaintTime();
+
+	IsWin();
+
 	CDialog::OnTimer(nIDEvent);
+}
+
+
+//是否通关了
+BOOL GameDlg::IsWin()
+{
+	//时间结束，没有过关
+	if (m_time == 0)
+	{
+		KillTimer(1);
+		MessageBox(_T("Game Over !"), _T("时间结束"));
+		m_time = 30;
+		//清除桌面的按钮
+		for (int i = 0; i < m_btnGroup.GetSize(); i++)
+			delete (CBlockButton *)m_btnGroup.GetAt(i);
+		m_btnGroup.RemoveAll();
+		//记录分数
+		/*CLLKAddDlg addData;
+		addData.DoModal();*/
+		return FALSE;
+	}
+
+	for (int i = 0; i < ROW; i++)
+		for (int j = 0; j < COLUMN; j++)
+		{
+			if (block[i][j] != 0)
+				return FALSE;
+		}
+	//过关后停止计时
+	KillTimer(1);
+	//如果全部通关
+
+		MessageBox(_T("恭喜你，已经全部通关"), _T("胜利"));
+
+		m_score += 2 * 100 + m_time;
+
+		for (int i = 0; i < m_btnGroup.GetSize(); i++)
+			delete (CBlockButton *)m_btnGroup.GetAt(i);
+
+		/*CLLKAddDlg addData;
+		addData.DoModal();*/
+
+		return true;
 }
 
 
@@ -919,9 +964,38 @@ void GameDlg::OnBnClickedButtonpause()
 	if (m_bPlaying && !m_pPause) {
 		m_bPlaying = false;
 		m_pPause = true;
+
+		KillTimer(1);
 	}
 	else {
 		m_pPause = false;
 		m_bPlaying = true;
+
+		SetTimer(1, 1000, NULL);
 	}
+
+
+	//暂停还得设置不能按
+
+
+}
+
+void GameDlg::OnPaintTime()
+{
+	CWindowDC dc(this);
+	CPen lPen(PS_SOLID, 2, RGB(222, 211, 140));
+	//设置字体颜色
+	dc.SelectObject(&lPen);
+	//选择画笔
+	CFont font;
+	CString str;
+	str.Format(_T("剩余时间: %3d 秒"), m_time);
+	//m_time 中存储剩余时间信息
+	font.CreatePointFont(100, _T("宋体"));
+	//设置字体
+	dc.SelectObject(&font);
+	dc.SetTextColor(RGB(222, 211, 140));
+	dc.SetBkColor(TRANSPARENT);
+	dc.TextOut(10, 40, str); //显示时间
+
 }
