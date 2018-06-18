@@ -89,7 +89,7 @@
     <Image Include="res\MyLinkGame.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\GameDlg.bmp">
+    <Image Include="res\denglu.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

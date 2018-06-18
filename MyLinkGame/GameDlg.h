@@ -1,6 +1,7 @@
 #pragma once
 #ifndef  GAMEDLG_H
 #define GAMEDLG_H
+#include "afxcmn.h"
 
 
 
@@ -64,6 +65,9 @@ public:
 	void DeleteLine();
 
 	//void ShowMap(int block[ROW][COLUMN]);
+
+//	static UINT TimeThread(LPVOID pParam);		//时间线程/时间条
+
 
 
 private:

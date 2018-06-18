@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxwin.h"
 
 
 
@@ -40,4 +41,15 @@ public:
 public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
+	CEdit m_edit;
+	CEdit m_edit2;
+
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnStnClickedStatic1();
+	afx_msg void OnStnClickedStatic3();
+	afx_msg void OnStnClickedStatic4();
+	afx_msg void OnStnClickedStatic5();
+	CStatic m_static3;
+	CStatic m_static4;
+	CStatic m_static5;
 };
