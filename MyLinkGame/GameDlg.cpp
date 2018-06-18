@@ -973,7 +973,7 @@ BOOL GameDlg::OnInitDialog()
 									//	m_time = 30;
 	
 
-	CreatBlocks(1);
+	CreatBlocks(2);
 	ShowMap();
 	
 	m_static4.SetWindowText(_T(""));
@@ -1148,23 +1148,38 @@ void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
+//暂停
 void GameDlg::OnStnClickedStatic6()
 {
 	if (m_bPlaying && !m_pPause) {
 		m_bPlaying = false;
 		m_pPause = true;
 
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(false);
+		}
 		KillTimer(1);
 	}
 	else {
+		int b[140];
+		int k = 0;
+		for (int i = 1; i < ROW - 1; i++) {
+			for (int j = 1; j < COLUMN - 1; j++)
+			{
+				b[k] = block[i][j];
+				k++;
+			}
+		}
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			if (b[i] != 0) {
+				((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(true);
+			}
+		}
 		m_pPause = false;
 		m_bPlaying = true;
 
 		SetTimer(1, 1000, NULL);
 	}
-
-
-	//暂停还得设置不能按
 
 
 }
@@ -1210,13 +1225,39 @@ void GameDlg::OnPaintTime()
 }
 
 
-
+//暂停测试用
 void GameDlg::OnBnClickedButtontesting()
 {
-	for (int i = 1; i < ROW-1; i++) {
-		for (int j = 1; j < COLUMN-1; j++)
-		{
-			block[i][j] = 0;
+
+	if (m_bPlaying && !m_pPause) {
+		m_bPlaying = false;
+		m_pPause = true;
+
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(false);
 		}
+		KillTimer(1);
 	}
+	else {
+		int b[140];
+		int k = 0;
+		for (int i = 1; i < ROW - 1; i++) {
+			for (int j = 1; j < COLUMN - 1; j++)
+			{
+				b[k] = block[i][j];
+				k++;
+			}
+		}
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			if (b[i] != 0) {
+				((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(true);
+			}
+		}
+		m_pPause = false;
+		m_bPlaying = true;
+
+		SetTimer(1, 1000, NULL);
+	}
+
+	
 }
