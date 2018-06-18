@@ -49,13 +49,15 @@ GameDlg::~GameDlg()
 void GameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_STATIC4, m_static4);
+	DDX_Control(pDX, IDC_STATIC5, m_static5);
 }
 
 
 BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_BUTTONRECREAT, &GameDlg::OnBnClickedButtonrecreat)
-	ON_BN_CLICKED(IDC_BUTTONHINT, &GameDlg::OnBnClickedButtonhint)
+	ON_STN_CLICKED(IDC_STATIC4, &GameDlg::OnStnClickedStatic4)
+	ON_STN_CLICKED(IDC_STATIC5, &GameDlg::OnStnClickedStatic5)
 END_MESSAGE_MAP()
 
 
@@ -824,26 +826,34 @@ BOOL GameDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	//更改对话框大小
-	CRect temprect(0, 0, 1280, 960);
+	CRect temprect(0, 0, 1280, 1000);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
 	CreatBlocks(2);
 	ShowMap();
 
+	m_static4.SetWindowText(_T(""));
+	m_static5.SetWindowText(_T(""));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-	
-void GameDlg::OnBnClickedButtonrecreat(){
-	// TODO: 在此添加控件通知处理程序代码
-	Recreate();
-	ShowMap();
-}
 
-void GameDlg::OnBnClickedButtonhint()
+
+////画线
+//void GameDlg::DrawLine() {
+//	for (int i = 0; i < 3; i++) {
+//		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
+//			//画图专用
+//			CDC* pDC = GetDC();
+//			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
+//			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+//		}
+//	}
+//}
+
+void GameDlg::OnStnClickedStatic4()//提示
 {
-	// TODO: 在此添加控件通知处理程序代码
 	for (int i = 0; i < (ROW - 2); i++) {
 		for (int j = 0; j < (COLUMN - 2); j++) {
 			if (block[i][j] != 0) {
@@ -874,14 +884,8 @@ void GameDlg::OnBnClickedButtonhint()
 	}
 }
 
-////画线
-//void GameDlg::DrawLine() {
-//	for (int i = 0; i < 3; i++) {
-//		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
-//			//画图专用
-//			CDC* pDC = GetDC();
-//			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
-//			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
-//		}
-//	}
-//}
+void GameDlg::OnStnClickedStatic5() //重排
+{
+	Recreate();
+	ShowMap();
+}
