@@ -5,7 +5,7 @@
 #include "MyLinkGame.h"
 #include "GameDlg.h"
 #include "afxdialogex.h"
-
+#include "Choose.h"
 #include <string>
 #include <string.h>
 #include <windows.h>
@@ -51,13 +51,20 @@ void GameDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_STATIC4, m_static4);
 	DDX_Control(pDX, IDC_STATIC5, m_static5);
+	DDX_Control(pDX, IDC_PROGRESS1, m_ctrlProgress);
+	DDX_Control(pDX, IDC_STATIC6, m_static6);
+	DDX_Control(pDX, IDC_STATIC12, m_static12);
 }
 
 
 BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_WM_CTLCOLOR()
+	ON_WM_TIMER()
 	ON_STN_CLICKED(IDC_STATIC4, &GameDlg::OnStnClickedStatic4)
 	ON_STN_CLICKED(IDC_STATIC5, &GameDlg::OnStnClickedStatic5)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_PROGRESS1, &GameDlg::OnNMCustomdrawProgress1)
+	ON_STN_CLICKED(IDC_STATIC6, &GameDlg::OnStnClickedStatic6)
+	ON_STN_CLICKED(IDC_STATIC12, &GameDlg::OnStnClickedStatic12)
 END_MESSAGE_MAP()
 
 
@@ -168,7 +175,7 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 				else if (block[j][i] != mytype) {
 					if (block[j][i] != 0) {
 						break;
-					}//
+					}
 
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
@@ -786,12 +793,9 @@ void GameDlg::Recreate() {
 
 	*/
 
+	m_time = m_time - 10;
+	m_ctrlProgress.OffsetPos(-10);
 
-	/*
-	然后就是CString的操作
-	每选择重排一次，积分扣十分或者多少分
-
-	*/
 }
 
 //根据map构造按钮
@@ -935,6 +939,7 @@ HBRUSH GameDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 BOOL GameDlg::OnInitDialog()
 {
+
 	CDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
@@ -942,16 +947,29 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 1000);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
+	m_bPlaying = true;
+	m_pPause = false;
+	m_ctrlProgress.SetRange(0, 200);
+	m_ctrlProgress.SetStep(-1);
+	m_ctrlProgress.SetPos(300);
+
+	timer = SetTimer(1, 1000, NULL);//设置进度条更新时钟
+									//	m_time = 30;
+	m_score = 0;
+	m_time = 200;
+
 	CreatBlocks(2);
 	ShowMap();
-
+	
 	m_static4.SetWindowText(_T(""));
 	m_static5.SetWindowText(_T(""));
+	m_static6.SetWindowText(_T(""));
+	m_static12.SetWindowText(_T(""));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-
+	
 
 ////画线
 //void GameDlg::DrawLine() {
@@ -1002,3 +1020,146 @@ void GameDlg::OnStnClickedStatic5() //重排
 	Recreate();
 	ShowMap();
 }
+
+void GameDlg::OnStnClickedStatic12()//返回
+{
+	Choose  choose;
+	choose.DoModal();
+	this->CloseWindow();
+}
+
+
+////画线
+//void GameDlg::DrawLine() {
+//	for (int i = 0; i < 3; i++) {
+//		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
+//			//画图专用
+//			CDC* pDC = GetDC();
+//			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
+//			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+//		}
+//	}
+//}
+
+void GameDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
+	{
+		m_ctrlProgress.StepIt();
+	}
+	
+	m_time--;
+	//调用重画函数
+
+	this->OnPaintTime();
+
+	IsWin();
+
+	CDialog::OnTimer(nIDEvent);
+}
+
+
+//是否通关了
+BOOL GameDlg::IsWin()
+{
+	//时间结束，没有过关
+	if (m_time == 0)
+	{
+		KillTimer(1);
+		MessageBox(_T("Game Over !"), _T("时间结束"));
+		m_time = 30;
+		//清除桌面的按钮
+		for (int i = 0; i < m_btnGroup.GetSize(); i++)
+			delete (CBlockButton *)m_btnGroup.GetAt(i);
+		m_btnGroup.RemoveAll();
+		//记录分数
+		/*CLLKAddDlg addData;
+		addData.DoModal();*/
+		return FALSE;
+	}
+
+	for (int i = 0; i < ROW; i++)
+		for (int j = 0; j < COLUMN; j++)
+		{
+			if (block[i][j] != 0)
+				return FALSE;
+		}
+	//过关后停止计时
+	KillTimer(1);
+	//如果全部通关
+
+		MessageBox(_T("恭喜你，已经全部通关"), _T("胜利"));
+
+		m_score += 2 * 100 + m_time;
+
+		for (int i = 0; i < m_btnGroup.GetSize(); i++)
+			delete (CBlockButton *)m_btnGroup.GetAt(i);
+
+		/*CLLKAddDlg addData;
+		addData.DoModal();*/
+
+		return true;
+}
+
+
+//void GameDlg::OnBnClickedButtonpause()
+//{
+//	if (m_bPlaying && !m_pPause) {
+//		m_bPlaying = false;
+//		m_pPause = true;
+//	}
+//	else {
+//		m_pPause = false;
+//		m_bPlaying = true;
+//	}
+//}
+
+void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+}
+
+
+void GameDlg::OnStnClickedStatic6()
+{
+	if (m_bPlaying && !m_pPause) {
+		m_bPlaying = false;
+		m_pPause = true;
+
+		KillTimer(1);
+	}
+	else {
+		m_pPause = false;
+		m_bPlaying = true;
+
+		SetTimer(1, 1000, NULL);
+	}
+
+
+	//暂停还得设置不能按
+
+
+}
+
+void GameDlg::OnPaintTime()
+{
+	CWindowDC dc(this);
+	CPen lPen(PS_SOLID, 2, RGB(222, 211, 140));
+	//设置字体颜色
+	dc.SelectObject(&lPen);
+	//选择画笔
+	CFont font;
+	CString str;
+	str.Format(_T("剩余时间: %3d 秒"), m_time);
+	//m_time 中存储剩余时间信息
+	font.CreatePointFont(100, _T("宋体"));
+	//设置字体
+	dc.SelectObject(&font);
+	dc.SetTextColor(RGB(222, 211, 140));
+	dc.SetBkColor(TRANSPARENT);
+	dc.TextOut(10, 40, str); //显示时间
+
+}
+

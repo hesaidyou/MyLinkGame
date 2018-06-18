@@ -4,10 +4,12 @@
 
 #include "stdafx.h"
 #include "MyLinkGame.h"
+#include "begindlg.h"
 #include "MyLinkGameDlg.h"
 #include "afxdialogex.h"
-
+#include "Choose.h"
 #include "GameDlg.h"
+#include "zhuce.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -198,8 +200,6 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 
 	char a[30];
 	char b[30];
-	char c[30];
-	char d[30];
 	char e[30];
 	char f[30];
 	char g[30];
@@ -214,11 +214,9 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 		exit(1);
 	}
 
-	fscanf(inFile, "%s %s %s %s %s %s %s %s\n", a, b, c, d, e, f, g, h);
+	fscanf(inFile, "%s %s %s %s %s %s\n", a, b, e, f, g, h);
 	strcpy(p->name, a);
 	strcpy(p->password, b);
-	strcpy(p->question, c);
-	strcpy(p->answer, d);
 	strcpy(p->game1, e);
 	strcpy(p->game2, f);
 	strcpy(p->game3, g);
@@ -227,13 +225,11 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 	shead = p;
 	phead = shead;
 
-	while (fscanf(inFile, "%s %s %s %s %s %s %s %s\n", a, b, c, d, e, f, g, h) != EOF)
+	while (fscanf(inFile, "%s %s %s %s %s %s\n", a, b, e, f, g, h) != EOF)
 	{
 		p = (struct linkgame*) malloc(LEN);
 		strcpy(p->name, a);
 		strcpy(p->password, b);
-		strcpy(p->question, c);
-		strcpy(p->answer, d);
 		strcpy(p->game1, e);
 		strcpy(p->game2, f);
 		strcpy(p->game3, g);
@@ -261,8 +257,8 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 				{
 					AfxMessageBox(_T("登录成功"));
 					this->CloseWindow();
-					GameDlg gamedlg;
-					gamedlg.DoModal();
+					begindlg a;
+					a.DoModal();
 				}
 				else AfxMessageBox(_T("密码错误"));
 				break;
@@ -276,12 +272,28 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 
 void CMyLinkGameDlg::OnStnClickedStatic2()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	zhuce d;
+	d.DoModal();
 }
 
 
 void CMyLinkGameDlg::OnStnClickedStatic3()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+BOOL CMyLinkGameDlg::PreTranslateMessage(MSG* pMsg) //键盘事件处理
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+		case VK_RETURN://按下回车
+			OnStnClickedStatic1();
+			return TRUE;
+			break;
+		}
+	}
+	return CDialog::PreTranslateMessage(pMsg);
 }
 

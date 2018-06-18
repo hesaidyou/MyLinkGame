@@ -2,8 +2,8 @@
 #ifndef  GAMEDLG_H
 #define GAMEDLG_H
 #include "afxcmn.h"
+#include "MyProgress.h"
 #include "afxwin.h"
-
 
 
 //行、列
@@ -20,6 +20,8 @@
 #define LBLOCK 65
 //块高度
 #define HBLOCK 60
+
+#define PLAY_TIMER_ID 1
 
 
 struct Point {
@@ -73,6 +75,12 @@ public:
 
 private:
 	CPtrArray m_btnGroup; //Button 组
+	BOOL m_bPlaying;
+	BOOL m_pPause;
+	MyProgress m_ctrlProgress;
+	UINT_PTR timer;
+	int m_score; //记录分数
+	int m_time;
 
 public:
 	int block[ROW][COLUMN];
@@ -81,12 +89,23 @@ public:
 	Point linkline[4];
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedButtonrecreat();
-	afx_msg void OnBnClickedButtonhint();
 	CStatic m_static4;
 	CStatic m_static5;
 	afx_msg void OnStnClickedStatic4();
 	afx_msg void OnStnClickedStatic5();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+
+	void OnPaintTime();
+
+
+
+	afx_msg void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
+	CStatic m_static6;
+	afx_msg void OnStnClickedStatic6();
+	CStatic m_static12;
+	afx_msg void OnStnClickedStatic12();
+	BOOL IsWin();
 };
 
 
