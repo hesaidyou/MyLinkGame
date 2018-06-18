@@ -12,6 +12,7 @@
 #include "zhuce.h"
 #include "forget.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -84,6 +85,8 @@ END_MESSAGE_MAP()
 BOOL CMyLinkGameDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	this->PlayMP3();
 
 	// 将“关于...”菜单项添加到系统菜单中。
 
@@ -297,5 +300,15 @@ BOOL CMyLinkGameDlg::PreTranslateMessage(MSG* pMsg) //键盘事件处理
 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
+}
+
+
+void CMyLinkGameDlg::PlayMP3()
+{
+	CString strFileName;
+	strFileName.Format(_T("res\\游戏中背景音乐.mp3"));
+	CString strCommond;
+	strCommond.Format(_T("play %s repeat"), strFileName);
+	mciSendString(strCommond, NULL, 0, NULL);
 }
 

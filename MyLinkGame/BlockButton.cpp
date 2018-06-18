@@ -1,5 +1,6 @@
 // LLKanButton.cpp : implementation file
 //
+
 #include "stdafx.h"
 #include <windows.h>
 #include <mmsystem.h>
@@ -69,7 +70,7 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		this->SetBitmap(m_fkBmp);
 		this->ShowWindow(SW_SHOW);
 		//点击按钮时的声音
-		PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(_T("res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 	//换到另外一种类型的按钮
 	else if (CBlockButton::ms_firstBtn->m_ID != this->m_ID)
@@ -84,7 +85,7 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		this->SetBitmap(m_fkBmp);
 		this->ShowWindow(SW_SHOW);
 
-		PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(_T("res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 		CBlockButton::ms_firstBtn = this;
 	}
@@ -96,7 +97,7 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		CBlockButton::ms_firstBtn->SetBitmap(m_fkBmp);
 		CBlockButton::ms_firstBtn->ShowWindow(SW_SHOW);
 		CBlockButton::ms_firstBtn = NULL;
-		PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(_T("res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 	//两个按钮可连接
 	else if (parent->CanRemove(ms_firstBtn->m_location.x, ms_firstBtn->m_location.y, this->m_location.x, this->m_location.y)  )
@@ -122,27 +123,27 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		//画线
 		parent->DrawLine();
 		parent->UpdateWindow();
-		PlaySound(_T("H:\\C++code\\LLKan\\res\\elec.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(_T("res\\elec.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Sleep(200);
 		parent->RedrawWindow();
 		//关闭对话框parent->ShowWindow(FALSE);
 		//parent->DeleteLine();
 	}
 	//两个同类型的按钮不可连接
-	//else
-	//{
-	//	str.Format(_T("res\\%d.bmp"), CBlockButton::ms_firstBtn->m_ID);
-	//	HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-	//	CBlockButton::ms_firstBtn->SetBitmap(m_fkBmp);
-	//	CBlockButton::ms_firstBtn->ShowWindow(SW_SHOW);
+	else
+	{
+		str.Format(_T("res\\%d.bmp"), CBlockButton::ms_firstBtn->m_ID + 20);
+		HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+		CBlockButton::ms_firstBtn->SetBitmap(m_fkBmp);
+		CBlockButton::ms_firstBtn->ShowWindow(SW_SHOW);
 
-	//	str.Format(_T("res\\%d.bmp"), (this->m_ID) + 100);
-	//	m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-	//	this->SetBitmap(m_fkBmp);
-	//	this->ShowWindow(SW_SHOW);
+		str.Format(_T("res\\%d.bmp"), (this->m_ID) + 10);
+		m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+		this->SetBitmap(m_fkBmp);
+		this->ShowWindow(SW_SHOW);
 
-	//	PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
-	//	CBlockButton::ms_firstBtn = this;
-	//}
+		PlaySound(_T("res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		CBlockButton::ms_firstBtn = this;
+	}
 	CButton::OnLButtonDown(nFlags, point);
 }
