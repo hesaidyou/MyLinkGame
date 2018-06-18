@@ -164,9 +164,11 @@ HCURSOR CMyLinkGameDlg::OnQueryDragIcon()
 void CMyLinkGameDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	this->CloseWindow();
+	//this->CloseWindow();
+	this->ShowWindow(FALSE);
 	GameDlg gamedlg;
 	gamedlg.DoModal();
+
 }
 
 
