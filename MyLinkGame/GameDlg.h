@@ -51,6 +51,8 @@ protected:
 public:
 	
 
+	void PlayMP3();
+
 	void CreatBlocks(int hardRate);
 
 	bool CanRemove(int row1, int column1, int row2, int column2);
@@ -89,8 +91,8 @@ public:
 	Point linkline[4];
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedButtonrecreat();
-	afx_msg void OnBnClickedButtonhint();
+//	afx_msg void OnBnClickedButtonrecreat();
+//	afx_msg void OnBnClickedButtonhint();
 	CStatic m_static4;
 	CStatic m_static5;
 	afx_msg void OnStnClickedStatic4();
@@ -98,12 +100,11 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 
-	afx_msg void OnBnClickedButtonpause();
+//	afx_msg void OnBnClickedButtonpause();
 	void OnPaintTime();
 
 
 
-	afx_msg void OnBnClickedButtonpause();
 	afx_msg void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
 	CStatic m_static6;
 	afx_msg void OnStnClickedStatic6();

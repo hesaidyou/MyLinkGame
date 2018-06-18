@@ -38,6 +38,6 @@ void MyProgress::OnPaint()
 	dc.FillRect(r, &BackgroundBrush);
 
 	r.top = (max-pos)*unit;
-
+	
 	dc.FillRect(r, &ForeBrush);
 }

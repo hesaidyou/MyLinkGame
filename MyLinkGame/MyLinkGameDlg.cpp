@@ -10,6 +10,7 @@
 #include "Choose.h"
 #include "GameDlg.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -82,6 +83,8 @@ END_MESSAGE_MAP()
 BOOL CMyLinkGameDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	this->PlayMP3();
 
 	// 将“关于...”菜单项添加到系统菜单中。
 
@@ -284,5 +287,15 @@ void CMyLinkGameDlg::OnStnClickedStatic2()
 void CMyLinkGameDlg::OnStnClickedStatic3()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CMyLinkGameDlg::PlayMP3()
+{
+	CString strFileName;
+	strFileName.Format(_T("res\\游戏中背景音乐.mp3"));
+	CString strCommond;
+	strCommond.Format(_T("play %s repeat"), strFileName);
+	mciSendString(strCommond, NULL, 0, NULL);
 }
 

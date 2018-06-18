@@ -71,6 +71,18 @@ END_MESSAGE_MAP()
 // GameDlg 消息处理程序
 
 
+
+void GameDlg::PlayMP3()
+{
+	CString strFileName;
+	strFileName.Format(_T("res\\地图背景音乐.mp3"));
+	CString strCommond;
+	strCommond.Format(_T("play %s repeat"), strFileName);
+	mciSendString(strCommond, NULL, 0, NULL);
+}
+
+
+
 //创建游戏
 void GameDlg::CreatBlocks(int hardRate) {
 
