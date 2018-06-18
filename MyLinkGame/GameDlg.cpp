@@ -51,13 +51,17 @@ void GameDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_STATIC4, m_static4);
 	DDX_Control(pDX, IDC_STATIC5, m_static5);
+	DDX_Control(pDX, IDC_PROGRESS1, m_ctrlProgress);
 }
 
 
 BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_WM_CTLCOLOR()
+	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BUTTONPAUSE, &GameDlg::OnBnClickedButtonpause)
 	ON_STN_CLICKED(IDC_STATIC4, &GameDlg::OnStnClickedStatic4)
 	ON_STN_CLICKED(IDC_STATIC5, &GameDlg::OnStnClickedStatic5)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_PROGRESS1, &GameDlg::OnNMCustomdrawProgress1)
 END_MESSAGE_MAP()
 
 
@@ -829,6 +833,17 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 1000);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
+
+	m_bPlaying = true;
+	m_pPause = false;
+	m_ctrlProgress.SetRange(0, 300);
+	m_ctrlProgress.SetStep(-1);
+	m_ctrlProgress.SetPos(300);
+
+	timer = SetTimer(1, 1000, NULL);//设置进度条更新时钟
+									//	m_time = 30;
+	m_score = 0;
+
 	CreatBlocks(2);
 	ShowMap();
 
@@ -838,7 +853,7 @@ BOOL GameDlg::OnInitDialog()
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-
+	
 
 ////画线
 //void GameDlg::DrawLine() {
@@ -888,4 +903,50 @@ void GameDlg::OnStnClickedStatic5() //重排
 {
 	Recreate();
 	ShowMap();
+}
+
+
+////画线
+//void GameDlg::DrawLine() {
+//	for (int i = 0; i < 3; i++) {
+//		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
+//			//画图专用
+//			CDC* pDC = GetDC();
+//			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
+//			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+//		}
+//	}
+//}
+
+void GameDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (m_pPause == false) {
+
+		if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
+		{
+			m_ctrlProgress.StepIt();
+		}
+
+	}
+	CDialog::OnTimer(nIDEvent);
+}
+
+
+void GameDlg::OnBnClickedButtonpause()
+{
+	if (m_bPlaying && !m_pPause) {
+		m_bPlaying = false;
+		m_pPause = true;
+	}
+	else {
+		m_pPause = false;
+		m_bPlaying = true;
+	}
+}
+
+void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
 }

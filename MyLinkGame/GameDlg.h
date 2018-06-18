@@ -21,6 +21,8 @@
 //块高度
 #define HBLOCK 60
 
+#define PLAY_TIMER_ID 1
+
 
 struct Point {
 	int x;
@@ -73,6 +75,12 @@ public:
 
 private:
 	CPtrArray m_btnGroup; //Button 组
+	BOOL m_bPlaying;
+	BOOL m_pPause;
+	CProgressCtrl m_ctrlProgress;
+	UINT_PTR timer;
+	int m_score; //记录分数
+
 
 public:
 	int block[ROW][COLUMN];
@@ -87,6 +95,14 @@ public:
 	CStatic m_static5;
 	afx_msg void OnStnClickedStatic4();
 	afx_msg void OnStnClickedStatic5();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+
+
+
+
+	afx_msg void OnBnClickedButtonpause();
+	afx_msg void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 
