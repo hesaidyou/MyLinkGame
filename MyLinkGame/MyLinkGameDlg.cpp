@@ -70,8 +70,6 @@ BEGIN_MESSAGE_MAP(CMyLinkGameDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON1, &CMyLinkGameDlg::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CMyLinkGameDlg::OnBnClickedButton2)
 	ON_STN_CLICKED(IDC_STATIC1, &CMyLinkGameDlg::OnStnClickedStatic1)
 	ON_STN_CLICKED(IDC_STATIC2, &CMyLinkGameDlg::OnStnClickedStatic2)
 	ON_STN_CLICKED(IDC_STATIC3, &CMyLinkGameDlg::OnStnClickedStatic3)
@@ -175,25 +173,6 @@ HCURSOR CMyLinkGameDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-
-
-
-
-void CMyLinkGameDlg::OnBnClickedButton1()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	this->CloseWindow();
-	GameDlg gamedlg;
-	gamedlg.DoModal();
-}
-
-
-void CMyLinkGameDlg::OnBnClickedButton2()
-{
-	// TODO: 在此添加控件通知处理程序代码
-}
 
 #define LEN sizeof(struct linkgame)   
 

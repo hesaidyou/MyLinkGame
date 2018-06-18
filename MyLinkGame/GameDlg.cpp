@@ -41,6 +41,7 @@ GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 
 
 
+
 GameDlg::~GameDlg()
 {
 }
@@ -783,7 +784,7 @@ void GameDlg::DrawLine() {
 //删除线
 void GameDlg::DeleteLine() {
 	CDC* pDC = GetDC();
-	
+
 }
 
 
@@ -795,9 +796,9 @@ HBRUSH GameDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	static CBrush gBr;
 	static bool isInited = false;
 	if (!isInited)
-	{
+{
 		CBitmap bitmap;
-		bitmap.LoadBitmap(IDB_GameDlgBG);
+		bitmap.LoadBitmap(IDB_BITMAP1);
 		gBr.CreatePatternBrush(&bitmap);
 		COLORREF clearColor = -1;
 		bitmap.DeleteObject();
@@ -809,13 +810,13 @@ HBRUSH GameDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		return gBr; //主窗口背景使用这个背景刷
 	}
 	else
-	{
+		{
 		pDC->SetBkMode(TRANSPARENT);
 		return   (HBRUSH)::GetStockObject(NULL_BRUSH); //其他控件使用透明背景
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;
-}
+		}
 
 BOOL GameDlg::OnInitDialog()
 {
@@ -833,9 +834,8 @@ BOOL GameDlg::OnInitDialog()
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-
-void GameDlg::OnBnClickedButtonrecreat()
-{
+	
+void GameDlg::OnBnClickedButtonrecreat(){
 	// TODO: 在此添加控件通知处理程序代码
 	Recreate();
 	ShowMap();
@@ -873,3 +873,15 @@ void GameDlg::OnBnClickedButtonhint()
 		}
 	}
 }
+
+////画线
+//void GameDlg::DrawLine() {
+//	for (int i = 0; i < 3; i++) {
+//		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
+//			//画图专用
+//			CDC* pDC = GetDC();
+//			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
+//			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+//		}
+//	}
+//}
