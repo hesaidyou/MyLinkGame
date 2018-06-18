@@ -4,9 +4,10 @@
 
 #include "stdafx.h"
 #include "MyLinkGame.h"
+#include "begindlg.h"
 #include "MyLinkGameDlg.h"
 #include "afxdialogex.h"
-
+#include "Choose.h"
 #include "GameDlg.h"
 
 #ifdef _DEBUG
@@ -261,8 +262,8 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 				{
 					AfxMessageBox(_T("µÇÂ¼³É¹¦"));
 					this->CloseWindow();
-					GameDlg gamedlg;
-					gamedlg.DoModal();
+					begindlg a;
+					a.DoModal();
 				}
 				else AfxMessageBox(_T("ÃÜÂë´íÎó"));
 				break;

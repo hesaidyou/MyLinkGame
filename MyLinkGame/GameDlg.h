@@ -103,6 +103,10 @@ public:
 
 	afx_msg void OnBnClickedButtonpause();
 	afx_msg void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
+	CStatic m_static6;
+	afx_msg void OnStnClickedStatic6();
+	CStatic m_static12;
+	afx_msg void OnStnClickedStatic12();
 };
 
 
