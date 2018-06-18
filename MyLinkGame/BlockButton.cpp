@@ -142,7 +142,7 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		this->SetBitmap(m_fkBmp);
 		this->ShowWindow(SW_SHOW);
 
-		PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(_T("res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		CBlockButton::ms_firstBtn = this;
 	}
 	CButton::OnLButtonDown(nFlags, point);
