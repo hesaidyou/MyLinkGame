@@ -273,13 +273,11 @@ void CMyLinkGameDlg::OnStnClickedStatic1()
 	}
 }
 
-
 void CMyLinkGameDlg::OnStnClickedStatic2()
 {
 	zhuce d;
 	d.DoModal();
 }
-
 
 void CMyLinkGameDlg::OnStnClickedStatic3()
 {
@@ -301,7 +299,6 @@ BOOL CMyLinkGameDlg::PreTranslateMessage(MSG* pMsg) //键盘事件处理
 	}
 	return CDialog::PreTranslateMessage(pMsg);
 }
-
 
 void CMyLinkGameDlg::PlayMP3()
 {
