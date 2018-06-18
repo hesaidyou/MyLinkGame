@@ -5,6 +5,7 @@
 #include "MyLinkGame.h"
 #include "zhuce.h"
 #include "afxdialogex.h"
+#include <string>
 
 
 // zhuce ¶Ô»°¿ò
@@ -208,8 +209,21 @@ void zhuce::OnBnClickedOk()
 				exit(1);
 			}
 
-			
-			fprintf(outFile, "\t\n%s %s %s %s %s %s", name1, password1, a1 , a2 , a3 , a4);
+			int nLength = name1.GetLength();
+			int nBytes = WideCharToMultiByte(CP_ACP, 0, name1, nLength, NULL, 0, NULL, NULL);
+			char* name2 = new char[nBytes + 1];
+			memset(name2, 0, nLength + 1);
+			WideCharToMultiByte(CP_OEMCP, 0, name1, nLength, name2, nBytes, NULL, NULL);
+			name2[nBytes] = 0;
+
+			int nLength2 = password1.GetLength();
+			int nBytes2 = WideCharToMultiByte(CP_ACP, 0, password1, nLength2, NULL, 0, NULL, NULL);
+			char* password2 = new char[nBytes2 + 1];
+			memset(password2, 0, nLength2 + 1);
+			WideCharToMultiByte(CP_OEMCP, 0, password1, nLength2, password2, nBytes2, NULL, NULL);
+			password2[nBytes2] = 0;
+
+			fprintf(outFile, "\t\n%s %s %s %s %s %s", name2, password2, a1 , a2 , a3 , a4);
 
 			fclose(outFile);
 			this->CloseWindow();
