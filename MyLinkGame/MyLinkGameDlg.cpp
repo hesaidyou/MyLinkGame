@@ -10,6 +10,7 @@
 #include "Choose.h"
 #include "GameDlg.h"
 #include "zhuce.h"
+#include "forget.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -279,7 +280,8 @@ void CMyLinkGameDlg::OnStnClickedStatic2()
 
 void CMyLinkGameDlg::OnStnClickedStatic3()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	forget f;
+	f.DoModal();
 }
 
 BOOL CMyLinkGameDlg::PreTranslateMessage(MSG* pMsg) //键盘事件处理

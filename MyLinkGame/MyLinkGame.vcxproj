@@ -196,6 +196,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockButton.h" />
     <ClInclude Include="Choose.h" />
+    <ClInclude Include="forget.h" />
     <ClInclude Include="GameDlg.h" />
     <ClInclude Include="guanyu.h" />
     <ClInclude Include="MyLinkGame.h" />
@@ -217,6 +218,7 @@
     </ClCompile>
     <ClCompile Include="BlockButton.cpp" />
     <ClCompile Include="Choose.cpp" />
+    <ClCompile Include="forget.cpp" />
     <ClCompile Include="GameDlg.cpp" />
     <ClCompile Include="guanyu.cpp" />
     <ClCompile Include="MyLinkGame.cpp" />
@@ -252,6 +254,7 @@
     <Image Include="res\GameDlg.bmp" />
     <Image Include="res\GameDlgS.bmp" />
     <Image Include="res\MyLinkGame.ico" />
+    <Image Include="res\zhuce.bmp" />
     <Image Include="res\关于.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
