@@ -5,6 +5,9 @@
 #include "MyLinkGame.h"
 #include "GameDlg.h"
 #include "afxdialogex.h"
+
+#include <string>
+#include <string.h>
 #include <windows.h>
 #include <time.h>
 #include <algorithm>
@@ -15,16 +18,18 @@
 
 // GameDlg 对话框
 
-int progress = 0;
-
 IMPLEMENT_DYNAMIC(GameDlg, CDialog)
-
 
 GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_GAMEDLG, pParent)
 {
 	//::SetBackgroundImage(IDB_BITMAP1);
-	::SetWindowPos(this->m_hWnd, HWND_BOTTOM, 0, 0, 1280, 1000, SWP_NOZORDER);
+	//GameDlg::SetWindowPos(this->m_hWnd, HWND_BOTTOM, 0, 0, 320, 240, SWP_NOZORDER);
+	//GameDlg::SetWindowPos(NULL, 0, 0, 320, 240, SWP_NOZORDER | SWP_NOMOVE);
+
+
+	//HBITMAP hbitmap;
+	//hbitmap = (HBITMAP)LoadImage(AfxGetInstanceHandle(), (WCHAR*)("res/GameDlg.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 
 	//初始化连线数组
 	for (int i = 0; i < 4; i++) {
@@ -43,36 +48,18 @@ GameDlg::~GameDlg()
 void GameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_PROGRESS1, m_ctrlProgress);
 }
 
 
 BEGIN_MESSAGE_MAP(GameDlg, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON1, &GameDlg::OnBnClickedButton1)
-	ON_NOTIFY(NM_CUSTOMDRAW, IDC_PROGRESS1, &GameDlg::OnNMCustomdrawProgress1)
-	ON_BN_CLICKED(IDC_BUTTON2, &GameDlg::OnBnClickedButton2)
+	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_BUTTONRECREAT, &GameDlg::OnBnClickedButtonrecreat)
+	ON_BN_CLICKED(IDC_BUTTONHINT, &GameDlg::OnBnClickedButtonhint)
 END_MESSAGE_MAP()
 
 
 // GameDlg 消息处理程序
 
-
-void GameDlg::OnBnClickedButton1()
-{
-	// TODO: 在此添加控件通知处理程序代码
-
-	timer=SetTimer(1, 1000, NULL);//设置进度条更新时钟
-
-	isThreadPause = false;
-	m_time = 30;
-	m_score = 0;
-	m_ctrlProgress.SetRange32(1, 3000);
-
-	OnBnbegin();
-	CreatBlocks(2);
-	ShowMap();
-
-}
 
 //创建游戏
 void GameDlg::CreatBlocks(int hardRate) {
@@ -137,19 +124,23 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 		linkline[i].x = -1;
 		linkline[i].y = -1;
 	}
-	int countline = 0;
+	countline = 0;
 	//录入第一个点
-	linkline[countline].x = row1;
-	linkline[countline].y = column1;
-	countline++;
+	linkline[0].x = row1;
+	linkline[0].y = column1;
+
 
 	//→↓→
 	//向右搜索
 	for (int i = column1 + 1; i <= COLUMN; i++) {
+
+		//录入第二个点，如果继续下一步，则countline++
+		linkline[1].x = row1;
+		linkline[1].y = i;
+
 		//只有遇到目标点并且类型相同才消除，如遇相同类型但不是目标点则跳过
 		if (block[row1][i] == mytype && row1 == row2 && i == column2) {
-			linkline[countline].x = row2;
-			linkline[countline].y = column2;
+			countline = 1;
 			return true;
 		}
 		//如果与起始点类型不同
@@ -158,25 +149,31 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			if (block[row1][i] != 0) {
 				break;
 			}
+
 			//向下搜索
 			for (int j = row1 + 1; j <= ROW; j++) {
 				//
+				linkline[2].x = j;
+				linkline[2].y = i;
+
 				if (block[j][i] == mytype && j == row2 && i == column2) {
-					linkline[countline].x = j;
-					linkline[countline].y = i;
+					countline = 2;
 					return true;
 				}
 				//如果与起始点类型不同
 				else if (block[j][i] != mytype) {
 					if (block[j][i] != 0) {
 						break;
-					}
+					}//
+
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -187,10 +184,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向左搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -204,10 +203,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 			//向上搜索
 			for (int j = row1 - 1; j >= 0; j--) {
+				linkline[2].x = j;
+				linkline[2].y = i;
 				//
 				if (block[j][i] == mytype && j == row2 && i == column2) {
-					linkline[countline].x = j;
-					linkline[countline].y = i;
+					countline = 2;
 					return true;
 				}
 				//如果与起始点类型不同
@@ -215,12 +215,15 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					if (block[j][i] != 0) {
 						break;
 					}
+
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -231,10 +234,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向左搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -251,10 +256,13 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 	//向左搜索
 	for (int i = column1 - 1; i >= 0; i--) {
+		//录入第二个点，如果继续下一步，则countline++
+		linkline[1].x = row1;
+		linkline[1].y = i;
+
 		//只有遇到目标点并且类型相同才消除，如遇相同类型但不是目标点则跳过
 		if (block[row1][i] == mytype && row1 == row2 && i == column2) {
-			linkline[countline].x = row2;
-			linkline[countline].y = column2;
+			countline = 1;
 			return true;
 		}
 		//如果与起始点类型不同
@@ -263,12 +271,16 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			if (block[row1][i] != 0) {
 				break;
 			}
+
+
 			//向下搜索
 			for (int j = row1 + 1; j <= ROW; j++) {
+				//录入第二个点，如果继续下一步，则countline++
+				linkline[2].x = j;
+				linkline[2].y = i;
 				//
 				if (block[j][i] == mytype && j == row2 && i == column2) {
-					linkline[countline].x = j;
-					linkline[countline].y = i;
+					countline = 2;
 					return true;
 				}
 				//如果与起始点类型不同
@@ -278,10 +290,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -292,10 +306,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向左搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -309,10 +325,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 			//向上搜索
 			for (int j = row1 - 1; j >= 0; j--) {
+				linkline[2].x = j;
+				linkline[2].y = i;
 				//
 				if (block[j][i] == mytype && j == row2 && i == column2) {
-					linkline[countline].x = j;
-					linkline[countline].y = i;
+					countline = 2;
 					return true;
 				}
 				//如果与起始点类型不同
@@ -322,10 +339,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向右搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -336,10 +355,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向左搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = j;
+						linkline[3].y = k;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[j][k] == mytype && j == row2 && k == column2) {
-							linkline[countline].x = j;
-							linkline[countline].y = k;
+							countline = 3;
 							return true;
 						}
 						else if (block[j][k] != mytype) {
@@ -356,9 +377,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 	//向下搜索
 	for (int i = row1 + 1; i <= ROW; i++) {
+		linkline[1].x = row2;
+		linkline[1].y = column2;
+
 		if (block[i][column1] == mytype && i == row2 && column1 == column2) {
-			linkline[countline].x = row2;
-			linkline[countline].y = column2;
+			countline = 1;
 			return true;
 		}
 		else if (block[i][column1] != mytype) {
@@ -367,9 +390,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			}
 			//向右搜索
 			for (int j = column1 + 1; j <= COLUMN; j++) {
+				linkline[2].x = i;
+				linkline[2].y = j;
+
 				if (block[i][j] == mytype && i == row2 && j == column2) {
-					linkline[countline].x = i;
-					linkline[countline].y = j;
+					countline = 2;
 					return true;
 				}
 				else if (block[i][j] != mytype) {
@@ -378,9 +403,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向下搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -392,10 +419,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 					//向上搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -408,10 +437,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			}
 
 			//向左搜索？？
-			for (int j = column1 + 1; j >= 0; j--) {
+			for (int j = column1 - 1; j >= 0; j--) {
+				linkline[2].x = row2;
+				linkline[2].y = column2;
+
 				if (block[i][j] == mytype && i == row2 && j == column2) {
-					linkline[countline].x = row2;
-					linkline[countline].y = column2;
+					countline = 2;
 					return true;
 				}
 				else if (block[i][j] != mytype) {
@@ -420,9 +451,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向下搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -434,10 +467,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 					//向上搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -453,9 +488,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 	//向上搜索
 	for (int i = row1 - 1; i >= 0; i--) {
+		linkline[1].x = row2;
+		linkline[1].y = column2;
+
 		if (block[i][column1] == mytype && i == row2 && column1 == column2) {
-			linkline[countline].x = row2;
-			linkline[countline].y = column2;
+			countline = 1;
 			return true;
 		}
 		else if (block[i][column1] != mytype) {
@@ -464,9 +501,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			}
 			//向右搜索
 			for (int j = column1 + 1; j <= COLUMN; j++) {
+				linkline[2].x = i;
+				linkline[2].y = j;
+
 				if (block[i][j] == mytype && i == row2 && j == column2) {
-					linkline[countline].x = i;
-					linkline[countline].y = j;
+					countline = 2;
 					return true;
 				}
 				else if (block[i][j] != mytype) {
@@ -475,9 +514,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向下搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -489,10 +530,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 					//向上搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+						
 						//如果是可消除但不是目标点，继续搜索
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -505,10 +548,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 			}
 
 			//向左搜索
-			for (int j = column1 + 1; j >= 0; j--) {
+			for (int j = column1 - 1; j >= 0; j--) {
+				linkline[2].x = row2;
+				linkline[2].y = column2;
+
 				if (block[i][j] == mytype && i == row2 && j == column2) {
-					linkline[countline].x = row2;
-					linkline[countline].y = column2;
+					countline = 2;
 					return true;
 				}
 				else if (block[i][j] != mytype) {
@@ -517,9 +562,11 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 					}
 					//向下搜索
 					for (int k = i + 1; k <= COLUMN; k++) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -531,10 +578,12 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 
 					//向上搜索
 					for (int k = i - 1; k >= 0; k--) {
+						linkline[3].x = k;
+						linkline[3].y = j;
+
 						//如果是可消除但不是目标点，继续搜索
 						if (block[k][j] == mytype && k == row2 && j == column2) {
-							linkline[countline].x = k;
-							linkline[countline].y = j;
+							countline = 3;
 							return true;
 						}
 						else if (block[k][j] != mytype) {
@@ -551,6 +600,7 @@ bool GameDlg::CanRemove(int row1, int column1, int row2, int column2) {
 	return false;
 }
 
+//1画线消除  2画线bug
 //消除
 void GameDlg::Remove(int row1, int column1, int row2, int column2) {
 	block[row1][column1] = 0;
@@ -659,7 +709,7 @@ void GameDlg::ShowMap() {
 			if (btn->m_ID)//如果为0则不显示
 			{
 				//尽量用绝对路径
-				str.Format(_T("res\\%d.bmp"), btn->m_ID + 10);
+				str.Format(_T("res\\%d.bmp"), btn->m_ID + 20);
 				HBITMAP m_fkBmp = (HBITMAP)::LoadImage
 				(AfxGetInstanceHandle(),
 					str, IMAGE_BITMAP, 0, 0,
@@ -715,125 +765,111 @@ void GameDlg::ShowMap() {
 	//}
 }
 
-UINT TimeThread(LPVOID p)
-{
-	CProgressCtrl *pw;
-	pw = (CProgressCtrl*)p;
-	int i;
-	//这里可以进行费时的操作，同时显示进度
-
-	for (i = 0; i<10000; i++)
-	{
-		pw->SetPos(i);
-		::Sleep(10);
+//画线
+void GameDlg::DrawLine() {
+	CDC* pDC = GetDC();
+	for (int i = 0; i < countline; i++) {
+		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
+			//画图专用
+			//pDC->SetDCPenColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(255, 255, 255));
+			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
+			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+		}
 	}
 
-	return 0;
+}
 
+//删除线
+void GameDlg::DeleteLine() {
+	CDC* pDC = GetDC();
+	
 }
 
 
-void GameDlg::OnBnbegin()
+HBRUSH GameDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	PlayerThread=AfxBeginThread(TimeThread, &m_ctrlProgress);
-}
-
-
-void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
-	// TODO: 在此添加控件通知处理程序代码
-	*pResult = 0;
-}
-
-BOOL GameDlg::IsWin(void)
-{
-	//时间结束，没有过关
-	if (m_time == 0)
+	// TODO:  在此更改 DC 的任何特性
+	static CBrush gBr;
+	static bool isInited = false;
+	if (!isInited)
 	{
-		KillTimer(1);
-		MessageBox(_T("Game Over !"), _T("时间结束"));
-		m_time = 30;
-		//清除桌面的按钮
-		for (int i = 0; i<m_btnGroup.GetSize(); i++)
-			delete (CBlockButton *)m_btnGroup.GetAt(i);
-		m_btnGroup.RemoveAll();
-		//记录分数
-
-	//	CLLKAddDlg addData;
-	//	addData.DoModal();
-
-		return FALSE;
+		CBitmap bitmap;
+		bitmap.LoadBitmap(IDB_GameDlgBG);
+		gBr.CreatePatternBrush(&bitmap);
+		COLORREF clearColor = -1;
+		bitmap.DeleteObject();
+		isInited = true;
 	}
-
-	for (int i = 1; i <  ROW - 1; i++)
-		for (int j = 1; j < COLUMN-1; j++)
-		{
-			if (block[i][j] != 0)
-				return FALSE;
-		}
-	//过关后停止计时
-	KillTimer(1);
-
-
-
-	return TRUE;
-
-}
-
-
-/*void GameDlg::OnTimer(UINT nIDEvent)
-{
-	
-		m_ctrlProgress.SetPos(progress);
-		if (progress == 100)
-		{
-			KillTimer(timer);
-		}
-	
-
-	CDialog::OnTimer(nIDEvent);
-
-}*/
-
-/*
-void GameDlg::OnShowWindow(BOOL bShow, UINT nStatus)
-{
-	CDialog::OnShowWindow(bShow, nStatus);
-
-	// TODO: Add your message handler code here
-	this->KillTimer(1);
-	this->SetTimer(1, 10000, NULL);
-	m_ctrlProgress.SetRange(1, 1000);
-}
- */
-
-
-//暂停
-void GameDlg::OnBnClickedButton2()
-{
-	if (!isThreadPause) {
-
-		PlayerThread->SuspendThread();     //挂起进程，相当于暂停播放
-		isThreadPause = true;
+	if (pWnd == this)
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		return gBr; //主窗口背景使用这个背景刷
 	}
 	else
 	{
-		PlayerThread->ResumeThread();
-		isThreadPause = false;
+		pDC->SetBkMode(TRANSPARENT);
+		return   (HBRUSH)::GetStockObject(NULL_BRUSH); //其他控件使用透明背景
 	}
+	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
+	return hbr;
+}
+
+BOOL GameDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// TODO:  在此添加额外的初始化
+	//更改对话框大小
+	CRect temprect(0, 0, 1280, 960);
+	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
+
+	CreatBlocks(2);
+	ShowMap();
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 异常: OCX 属性页应返回 FALSE
 }
 
 
-//画线
-void GameDlg::DrawLine() {
-	for (int i = 0; i < 3; i++) {
-		if (linkline[i].x != -1 && linkline[i+1].x!=-1) {
-			//画图专用
-			CDC* pDC = GetDC();
-			pDC->MoveTo((XF + (linkline[i].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i].x-1) * HBLOCK + HBLOCK/2));
-			pDC->LineTo((XF + (linkline[i + 1].y-1) * LBLOCK + LBLOCK/2), (YF + (linkline[i + 1].x-1) * HBLOCK + HBLOCK/2));
+void GameDlg::OnBnClickedButtonrecreat()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Recreate();
+	ShowMap();
+}
+
+void GameDlg::OnBnClickedButtonhint()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	for (int i = 0; i < (ROW - 2); i++) {
+		for (int j = 0; j < (COLUMN - 2); j++) {
+			if (block[i][j] != 0) {
+				for (int p = 0; p < ROW - 2; p++) {
+					for (int q = 0; q < COLUMN - 2; q++) {
+						if (block[p][q] != 0) {
+							if (CanRemove(i, j, p, q)) {
+								CString str;
+								str.Format(_T("res\\%d.bmp"), block[i][j]);
+								HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+								CBlockButton *btn1 = (CBlockButton *)m_btnGroup.GetAt(i * (COLUMN - 2) + j);//(CBlockButton *)
+								btn1->SetBitmap(m_fkBmp);
+
+								str.Format(_T("res\\%d.bmp"), block[p][q]);
+								m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+								CBlockButton *btn2 = (CBlockButton *)m_btnGroup.GetAt(p * (COLUMN - 2) + q);//(CBlockButton *)
+								btn2->SetBitmap(m_fkBmp);
+
+								this->ShowWindow(SW_SHOW);
+
+								return;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

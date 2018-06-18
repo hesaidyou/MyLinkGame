@@ -9,11 +9,15 @@
 #define ROW 10+2
 #define COLUMN 14+2
 //连连看游戏区界面，按钮起始位置
-#define XF 70
-#define XS 70
-#define YF 30
-#define YS 70
+
+//开始布置块的左上起点x坐标
+#define XF 245
+//#define XS 100
+#define YF 120
+//#define YS 70
+//块长度
 #define LBLOCK 65
+//块高度
 #define HBLOCK 60
 
 
@@ -42,7 +46,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedButton1();
+	
 
 	void CreatBlocks(int hardRate);
 
@@ -58,7 +62,7 @@ public:
 	//画线
 	void DrawLine();
 
-	BOOL IsWin(void);
+	void DeleteLine();
 
 	//void ShowMap(int block[ROW][COLUMN]);
 
@@ -71,29 +75,13 @@ private:
 
 public:
 	int block[ROW][COLUMN];
-	 CProgressCtrl m_ctrlProgress;
-	UINT_PTR timer;
-	UINT_PTR timer2;
-
-	int m_time; //剩余时间
-	int m_score; //记录分数
-	BOOL isThreadPause;
-	CWinThread*  PlayerThread;
-
-//	int progress;
-
-	afx_msg
-		void OnBnbegin();
-	void OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult);
-
-
-
-
-
-
-	afx_msg void OnBnClickedButton2();
+	int countline;
 
 	Point linkline[4];
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButtonrecreat();
+	afx_msg void OnBnClickedButtonhint();
 };
 
 
