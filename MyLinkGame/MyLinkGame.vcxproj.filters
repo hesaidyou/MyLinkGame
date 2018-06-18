@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="linkgame.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyLinkGame.h">
@@ -48,7 +49,16 @@
     <ClInclude Include="GameDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MyProgress.h">
+    <ClInclude Include="Choose.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="begindlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="bangzhu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="guanyu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,6 +87,18 @@
     <ClCompile Include="GameDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Choose.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="begindlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="bangzhu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="guanyu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="MyProgress.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -102,6 +124,21 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\denglu.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\GameDlgS.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\difficulty.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\begin.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\bangzhu.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\关于.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
