@@ -71,6 +71,18 @@ END_MESSAGE_MAP()
 // GameDlg 消息处理程序
 
 
+
+void GameDlg::PlayMP3()
+{
+	CString strFileName;
+	strFileName.Format(_T("res\\地图背景音乐.mp3"));
+	CString strCommond;
+	strCommond.Format(_T("play %s repeat"), strFileName);
+	mciSendString(strCommond, NULL, 0, NULL);
+}
+
+
+
 //创建游戏
 void GameDlg::CreatBlocks(int hardRate) {
 
@@ -985,22 +997,22 @@ BOOL GameDlg::OnInitDialog()
 
 void GameDlg::OnStnClickedStatic4()//提示
 {
-	for (int i = 0; i < (ROW - 2); i++) {
-		for (int j = 0; j < (COLUMN - 2); j++) {
+	for (int i = 1; i < (ROW - 1); i++) {
+		for (int j = 1; j < (COLUMN - 1); j++) {
 			if (block[i][j] != 0) {
-				for (int p = 0; p < ROW - 2; p++) {
-					for (int q = 0; q < COLUMN - 2; q++) {
+				for (int p = 1; p < ROW - 1; p++) {
+					for (int q = 1; q < COLUMN - 1; q++) {
 						if (block[p][q] != 0) {
 							if (CanRemove(i, j, p, q)) {
 								CString str;
 								str.Format(_T("res\\%d.bmp"), block[i][j]);
 								HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-								CBlockButton *btn1 = (CBlockButton *)m_btnGroup.GetAt(i * (COLUMN - 2) + j);//(CBlockButton *)
+								CBlockButton *btn1 = (CBlockButton *)m_btnGroup.GetAt((i - 1) * (COLUMN - 2) + j - 1);//(CBlockButton *)
 								btn1->SetBitmap(m_fkBmp);
 
 								str.Format(_T("res\\%d.bmp"), block[p][q]);
 								m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-								CBlockButton *btn2 = (CBlockButton *)m_btnGroup.GetAt(p * (COLUMN - 2) + q);//(CBlockButton *)
+								CBlockButton *btn2 = (CBlockButton *)m_btnGroup.GetAt((p - 1 ) * (COLUMN - 2) + q - 1);//(CBlockButton *)
 								btn2->SetBitmap(m_fkBmp);
 
 								this->ShowWindow(SW_SHOW);

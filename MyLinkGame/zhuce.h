@@ -19,9 +19,12 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-
+	BOOL zhuce::OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_edit3;
 	CEdit m_edit4;
+	CStatic m_static21;
+	CStatic m_static22;
+	afx_msg void OnBnClickedOk();
 };
