@@ -130,20 +130,20 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		//parent->DeleteLine();
 	}
 	//两个同类型的按钮不可连接
-	//else
-	//{
-	//	str.Format(_T("res\\%d.bmp"), CBlockButton::ms_firstBtn->m_ID);
-	//	HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-	//	CBlockButton::ms_firstBtn->SetBitmap(m_fkBmp);
-	//	CBlockButton::ms_firstBtn->ShowWindow(SW_SHOW);
+	else
+	{
+		str.Format(_T("res\\%d.bmp"), CBlockButton::ms_firstBtn->m_ID + 20);
+		HBITMAP m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+		CBlockButton::ms_firstBtn->SetBitmap(m_fkBmp);
+		CBlockButton::ms_firstBtn->ShowWindow(SW_SHOW);
 
-	//	str.Format(_T("res\\%d.bmp"), (this->m_ID) + 100);
-	//	m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
-	//	this->SetBitmap(m_fkBmp);
-	//	this->ShowWindow(SW_SHOW);
+		str.Format(_T("res\\%d.bmp"), (this->m_ID) + 10);
+		m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+		this->SetBitmap(m_fkBmp);
+		this->ShowWindow(SW_SHOW);
 
-	//	PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
-	//	CBlockButton::ms_firstBtn = this;
-	//}
+		PlaySound(_T("H:\\C++code\\LLKan\\res\\sel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		CBlockButton::ms_firstBtn = this;
+	}
 	CButton::OnLButtonDown(nFlags, point);
 }
