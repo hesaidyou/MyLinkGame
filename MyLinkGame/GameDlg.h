@@ -2,6 +2,7 @@
 #ifndef  GAMEDLG_H
 #define GAMEDLG_H
 #include "afxcmn.h"
+#include "afxwin.h"
 
 
 
@@ -82,6 +83,10 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonrecreat();
 	afx_msg void OnBnClickedButtonhint();
+	CStatic m_static4;
+	CStatic m_static5;
+	afx_msg void OnStnClickedStatic4();
+	afx_msg void OnStnClickedStatic5();
 };
 
 

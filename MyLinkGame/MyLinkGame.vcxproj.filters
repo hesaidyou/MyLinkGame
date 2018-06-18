@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="linkgame.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyLinkGame.h">
