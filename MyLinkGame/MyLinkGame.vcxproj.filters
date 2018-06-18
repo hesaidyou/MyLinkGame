@@ -67,6 +67,9 @@
     <ClInclude Include="zhuce.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="forget.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyLinkGame.cpp">
@@ -111,6 +114,9 @@
     <ClCompile Include="zhuce.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="forget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyLinkGame.rc">
@@ -148,6 +154,9 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\关于.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\zhuce.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

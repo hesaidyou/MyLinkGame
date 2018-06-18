@@ -5,7 +5,7 @@
 
 class bangzhu : public CDialogEx
 {
-	DECLARE_DYNAMIC(bangzhu);
+	DECLARE_DYNAMIC(bangzhu)
 
 public:
 	bangzhu(CWnd* pParent = NULL);   // 标准构造函数
@@ -19,5 +19,5 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	BOOL bangzhu::OnInitDialog();
-	DECLARE_MESSAGE_MAP();
+	DECLARE_MESSAGE_MAP()
 };
