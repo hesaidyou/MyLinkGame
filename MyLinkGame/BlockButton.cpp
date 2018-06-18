@@ -111,8 +111,8 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		//更新窗口，来调用对话框的onpain（）画路径
 		parent->UpdateWindow();
 		//消除一对图片后，剩余时间和分数都增加
-		//parent->m_time += 5;
-		//parent->m_score += 10;
+//		parent->m_time += 1;
+		parent->m_score += 2;
 		//改变按钮类型和map的值为0
 		ms_firstBtn->m_ID = 0;
 		ms_secondBtn->m_ID = 0;
