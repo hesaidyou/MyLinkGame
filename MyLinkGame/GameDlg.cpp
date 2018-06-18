@@ -39,7 +39,7 @@ GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 }
 
 
-}
+
 
 GameDlg::~GameDlg()
 {

@@ -70,8 +70,8 @@ BEGIN_MESSAGE_MAP(CMyLinkGameDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON1, &CMyLinkGameDlg::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CMyLinkGameDlg::OnBnClickedButton2)
+	//ON_BN_CLICKED(IDC_BUTTON1, &CMyLinkGameDlg::OnBnClickedButton1)
+	//ON_BN_CLICKED(IDC_BUTTON2, &CMyLinkGameDlg::OnBnClickedButton2)
 	ON_STN_CLICKED(IDC_STATIC3, &CMyLinkGameDlg::OnStnClickedStatic3)
 	ON_STN_CLICKED(IDC_STATIC4, &CMyLinkGameDlg::OnStnClickedStatic4)
 	ON_STN_CLICKED(IDC_STATIC5, &CMyLinkGameDlg::OnStnClickedStatic5)
@@ -177,20 +177,7 @@ HCURSOR CMyLinkGameDlg::OnQueryDragIcon()
 
 
 
-void CMyLinkGameDlg::OnBnClickedButton2()
 
-
-
-
-void CMyLinkGameDlg::OnBnClickedButton1()
-{
-	// TODO: 在此添加控件通知处理程序代码
-
-	Rankdlg r = new Rankdlg();
-	r.DoModal();
-
-
-}
 
 #define LEN sizeof(struct linkgame)   
 struct linkgame
@@ -278,7 +265,7 @@ void CMyLinkGameDlg::OnStnClickedStatic3()
 				{
 					AfxMessageBox(_T("登录成功"));
 					this->CloseWindow();
-					Rankdlg r = new Rankdlg();
+					GameDlg r = new GameDlg();
 					r.DoModal();
 				}
 				else AfxMessageBox(_T("密码错误"));
