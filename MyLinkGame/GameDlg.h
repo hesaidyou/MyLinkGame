@@ -73,7 +73,9 @@ public:
 
 //	static UINT TimeThread(LPVOID pParam);		//时间线程/时间条
 
-
+	int m_score; //记录分数
+	int m_time;
+	int hard_rate;
 
 private:
 	CPtrArray m_btnGroup; //Button 组
@@ -81,8 +83,7 @@ private:
 	BOOL m_pPause;
 	MyProgress m_ctrlProgress;
 	UINT_PTR timer;
-	int m_score; //记录分数
-	int m_time;
+
 
 public:
 	int block[ROW][COLUMN];
@@ -111,6 +112,9 @@ public:
 	CStatic m_static12;
 	afx_msg void OnStnClickedStatic12();
 	BOOL IsWin();
+	afx_msg void OnBnClickedButtontesting();
+	afx_msg void OnBnClickedPahhangceshi();
+	afx_msg void OnBnClickedWintest();
 };
 
 

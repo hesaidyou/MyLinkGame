@@ -12,7 +12,9 @@
 #include <time.h>
 #include <algorithm>
 
+#include "LLKAddDlg.h"
 #include "BlockButton.h"
+#include "PaiHangBang.h"
 
 #define IDC_BLOCK 10000
 
@@ -65,6 +67,9 @@ BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_PROGRESS1, &GameDlg::OnNMCustomdrawProgress1)
 	ON_STN_CLICKED(IDC_STATIC6, &GameDlg::OnStnClickedStatic6)
 	ON_STN_CLICKED(IDC_STATIC12, &GameDlg::OnStnClickedStatic12)
+	ON_BN_CLICKED(IDC_BUTTONTESTING, &GameDlg::OnBnClickedButtontesting)
+	ON_BN_CLICKED(IDC_PAHHANGCESHI, &GameDlg::OnBnClickedPahhangceshi)
+	ON_BN_CLICKED(IDC_WinTest, &GameDlg::OnBnClickedWintest)
 END_MESSAGE_MAP()
 
 
@@ -113,11 +118,11 @@ void GameDlg::CreatBlocks(int hardRate) {
 	}
 
 
-	//难度3,20种图片
+	//难度3,14种图片
 	if (hardRate == 3) {
 		for (int i = 0; i <(ROW - 2)*(COLUMN - 2); i += 7) {
-			for (int x = 0; x < 7; x++) {
-				b[i + x] = i / 7 + 1;
+			for (int x = 0; x < 10; x++) {
+				b[i + x] = i / 10 + 1;
 			}
 		}
 	}
@@ -768,6 +773,7 @@ void GameDlg::Recreate() {
 			k++;
 		}
 	}
+
 	srand((unsigned)time(NULL));
 	for (i = 1; i<(ROW - 2)*(COLUMN - 2); i++) {
 		if (b[i] == 0)
@@ -959,16 +965,19 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 1000);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
+	hard_rate = 2;
+	m_score = 0;
+	m_time = 150;
+
 	m_bPlaying = true;
 	m_pPause = false;
-	m_ctrlProgress.SetRange(0, 200);
-	m_ctrlProgress.SetStep(-1);
-	m_ctrlProgress.SetPos(300);
+	m_ctrlProgress.SetRange(0, 450);
+	m_ctrlProgress.SetStep(-3);
+	m_ctrlProgress.SetPos(450);
 
 	timer = SetTimer(1, 1000, NULL);//设置进度条更新时钟
 									//	m_time = 30;
-	m_score = 0;
-	m_time = 200;
+	
 
 	CreatBlocks(2);
 	ShowMap();
@@ -1014,7 +1023,7 @@ void GameDlg::OnStnClickedStatic4()//提示
 								m_fkBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), str, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 								CBlockButton *btn2 = (CBlockButton *)m_btnGroup.GetAt((p - 1 ) * (COLUMN - 2) + q - 1);//(CBlockButton *)
 								btn2->SetBitmap(m_fkBmp);
-
+							//	btn2->ShowWindow(FALSE);
 								this->ShowWindow(SW_SHOW);
 
 								return;
@@ -1025,6 +1034,9 @@ void GameDlg::OnStnClickedStatic4()//提示
 			}
 		}
 	}
+
+	m_time = m_time - 10;
+	m_ctrlProgress.OffsetPos(-10);
 }
 
 void GameDlg::OnStnClickedStatic5() //重排
@@ -1057,6 +1069,8 @@ void GameDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == PLAY_TIMER_ID && m_bPlaying && m_pPause == false)
 	{
+		m_ctrlProgress.SetPos(m_time * 3);
+
 		m_ctrlProgress.StepIt();
 	}
 	
@@ -1079,38 +1093,50 @@ BOOL GameDlg::IsWin()
 	{
 		KillTimer(1);
 		MessageBox(_T("Game Over !"), _T("时间结束"));
-		m_time = 30;
+		m_time = 150;
 		//清除桌面的按钮
 		for (int i = 0; i < m_btnGroup.GetSize(); i++)
 			delete (CBlockButton *)m_btnGroup.GetAt(i);
 		m_btnGroup.RemoveAll();
 		//记录分数
-		/*CLLKAddDlg addData;
-		addData.DoModal();*/
+		m_score += m_time;
+		CLLKAddDlg addData;
+		addData.DoModal();
 		return FALSE;
 	}
 
-	for (int i = 0; i < ROW; i++)
-		for (int j = 0; j < COLUMN; j++)
-		{
-			if (block[i][j] != 0)
-				return FALSE;
+	else {
+		int count = 0;
+		for (int i = 1; i < ROW-1; i++) {
+			for (int j = 1; j < COLUMN-1; j++)
+			{
+				if (block[i][j] != 0)
+					return FALSE;
+				else
+					count++;
+			}
 		}
-	//过关后停止计时
-	KillTimer(1);
-	//如果全部通关
 
-		MessageBox(_T("恭喜你，已经全部通关"), _T("胜利"));
+		if (count == 140) {
+			//过关后停止计时
+			KillTimer(1);
+			//如果全部通关
 
-		m_score += 2 * 100 + m_time;
+			MessageBox(_T("恭喜你，已经全部通关"), _T("胜利"));
 
-		for (int i = 0; i < m_btnGroup.GetSize(); i++)
-			delete (CBlockButton *)m_btnGroup.GetAt(i);
+			m_score += m_time;
 
-		/*CLLKAddDlg addData;
-		addData.DoModal();*/
+			for (int i = 0; i < m_btnGroup.GetSize(); i++)
+				delete (CBlockButton *)m_btnGroup.GetAt(i);
 
-		return true;
+			//记录分数
+			CLLKAddDlg addData;
+			addData.DoModal();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -1134,23 +1160,38 @@ void GameDlg::OnNMCustomdrawProgress1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
+//暂停
 void GameDlg::OnStnClickedStatic6()
 {
 	if (m_bPlaying && !m_pPause) {
 		m_bPlaying = false;
 		m_pPause = true;
 
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(false);
+		}
 		KillTimer(1);
 	}
 	else {
+		int b[140];
+		int k = 0;
+		for (int i = 1; i < ROW - 1; i++) {
+			for (int j = 1; j < COLUMN - 1; j++)
+			{
+				b[k] = block[i][j];
+				k++;
+			}
+		}
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			if (b[i] != 0) {
+				((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(true);
+			}
+		}
 		m_pPause = false;
 		m_bPlaying = true;
 
 		SetTimer(1, 1000, NULL);
 	}
-
-
-	//暂停还得设置不能按
 
 
 }
@@ -1173,5 +1214,79 @@ void GameDlg::OnPaintTime()
 	dc.SetBkColor(TRANSPARENT);
 	dc.TextOut(10, 40, str); //显示时间
 
+	CWindowDC dc1(this);
+	CPen lPen1(PS_SOLID, 2, RGB(222, 211, 140));
+	//设置字体颜色
+	dc1.SelectObject(&lPen);
+	//选择画笔
+	CFont font1;
+	CString str1;
+	if(!IsWin())
+		str1.Format(_T("当前分数: %3d 分"), m_score);
+	else
+		str1.Format(_T("当前分数: %3d 分"), m_time+m_score);
+
+	//m_time 中存储剩余时间信息
+	font1.CreatePointFont(100, _T("宋体"));
+	//设置字体
+	dc1.SelectObject(&font1);
+	dc1.SetTextColor(RGB(222, 211, 140));
+	dc1.SetBkColor(TRANSPARENT);
+	dc1.TextOut(150, 40, str1); //显示分数
+
 }
 
+
+//暂停测试用
+void GameDlg::OnBnClickedButtontesting()
+{
+
+	if (m_bPlaying && !m_pPause) {
+		m_bPlaying = false;
+		m_pPause = true;
+
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(false);
+		}
+		KillTimer(1);
+	}
+	else {
+		int b[140];
+		int k = 0;
+		for (int i = 1; i < ROW - 1; i++) {
+			for (int j = 1; j < COLUMN - 1; j++)
+			{
+				b[k] = block[i][j];
+				k++;
+			}
+		}
+		for (int i = 0; i < m_btnGroup.GetSize(); i++) {
+			if (b[i] != 0) {
+				((CBlockButton *)m_btnGroup.GetAt(i))->ShowWindow(true);
+			}
+		}
+		m_pPause = false;
+		m_bPlaying = true;
+
+		SetTimer(1, 1000, NULL);
+
+	}
+}
+
+
+void GameDlg::OnBnClickedPahhangceshi()
+{
+	PaiHangBang paihang;
+	paihang.DoModal();
+}
+
+
+void GameDlg::OnBnClickedWintest()
+{
+	for (int i = 1; i < ROW - 1; i++) {
+		for (int j = 1; j < COLUMN - 1; j++)
+		{
+			block[i][j] = 0;
+		}
+	}
+}

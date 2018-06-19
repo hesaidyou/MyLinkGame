@@ -199,9 +199,11 @@
     <ClInclude Include="forget.h" />
     <ClInclude Include="GameDlg.h" />
     <ClInclude Include="guanyu.h" />
+    <ClInclude Include="LLKAddDlg.h" />
     <ClInclude Include="MyLinkGame.h" />
     <ClInclude Include="MyLinkGameDlg.h" />
     <ClInclude Include="MyProgress.h" />
+    <ClInclude Include="PaiHangBang.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="rank.h" />
     <ClInclude Include="Resource.h" />
@@ -221,9 +223,11 @@
     <ClCompile Include="forget.cpp" />
     <ClCompile Include="GameDlg.cpp" />
     <ClCompile Include="guanyu.cpp" />
+    <ClCompile Include="LLKAddDlg.cpp" />
     <ClCompile Include="MyLinkGame.cpp" />
     <ClCompile Include="MyLinkGameDlg.cpp" />
     <ClCompile Include="MyProgress.cpp" />
+    <ClCompile Include="PaiHangBang.cpp" />
     <ClCompile Include="player.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
