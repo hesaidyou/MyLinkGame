@@ -91,7 +91,7 @@ BOOL Choose::OnInitDialog()
 
 
 
-
+//简单 无变化
 void Choose::OnStnClickedStatic6()
 {
 	GameDlg gamedlg;
@@ -99,10 +99,11 @@ void Choose::OnStnClickedStatic6()
 	this->CloseWindow();
 }
 
-
+//向下
 void Choose::OnStnClickedStatic7()
 {
 	GameDlg gamedlg;
+	gamedlg.SetModal(2);
 	gamedlg.DoModal();
 	this->CloseWindow();
 }

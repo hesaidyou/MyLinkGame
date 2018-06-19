@@ -75,6 +75,7 @@ public:
 
 	int m_score; //¼ÇÂ¼·ÖÊý
 	int m_time;
+	int modal;
 	int hard_rate;
 
 private:
@@ -98,6 +99,8 @@ public:
 	CStatic m_static5;
 	afx_msg void OnStnClickedStatic4();
 	afx_msg void OnStnClickedStatic5();
+	void ModalTwo();
+	void SetModal(int modal);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 
