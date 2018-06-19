@@ -36,6 +36,7 @@ GameDlg::GameDlg(CWnd* pParent /*=NULL*/)
 		linkline[i].x = -1;
 		linkline[i].y = -1;
 	}
+
 }
 
 
@@ -1034,6 +1035,31 @@ void GameDlg::OnStnClickedStatic5() //÷ÿ≈≈
 {
 	Recreate();
 	ShowMap();
+}
+
+void GameDlg::ModalTwo() {
+	for (int i = 0; i < (ROW - 2); i++) {
+		for (int j = 0; j < (COLUMN - 2); j++) {
+			CBlockButton *btn = (CBlockButton *)m_btnGroup.GetAt(i * (COLUMN - 2) + j);
+			if (btn->m_ID==0) {
+				for (int p = i- 1; p >= 0; p--) {
+					CBlockButton *btn1 = (CBlockButton *)m_btnGroup.GetAt(p * (COLUMN - 2) + j);
+					btn1->m_location.x++;
+					//btn1->m_location.y++;
+					btn1->SetWindowPos(NULL, 0, 0, XF + btn1->m_location.y * 65, YF + btn1->m_location.x * 60, SWP_NOSIZE);
+				}
+			}
+		}
+	}
+	//for (int i = 0; i < (ROW - 2); i++) {
+	//	for (int j = 0; j < (COLUMN - 2); j++) {
+
+	//	}
+	//}
+}
+
+void GameDlg::SetModal(int modal) {
+	this->modal = modal;
 }
 
 void GameDlg::OnStnClickedStatic12()//∑µªÿ

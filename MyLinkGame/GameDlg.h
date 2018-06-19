@@ -75,7 +75,7 @@ public:
 
 	int m_score; //记录分数
 	int m_time;
-
+	int modal;
 private:
 	CPtrArray m_btnGroup; //Button 组
 	BOOL m_bPlaying;
@@ -97,6 +97,8 @@ public:
 	CStatic m_static5;
 	afx_msg void OnStnClickedStatic4();
 	afx_msg void OnStnClickedStatic5();
+	void ModalTwo();
+	void SetModal(int modal);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 

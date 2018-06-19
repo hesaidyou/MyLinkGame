@@ -123,11 +123,17 @@ void CBlockButton::OnLButtonDown(UINT nFlags, CPoint point){
 		//画线
 		parent->DrawLine();
 		parent->UpdateWindow();
+
 		PlaySound(_T("res\\elec.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Sleep(200);
 		parent->RedrawWindow();
 		//关闭对话框parent->ShowWindow(FALSE);
 		//parent->DeleteLine();
+
+		if (parent->modal == 2) {
+			parent->ModalTwo();
+		}
+		parent->UpdateWindow();
 	}
 	//两个同类型的按钮不可连接
 	else
