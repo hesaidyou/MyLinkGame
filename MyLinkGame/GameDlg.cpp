@@ -795,17 +795,17 @@ void GameDlg::Recreate() {
 			k++;
 		}
 	}
-	for (int i = 1; i < ROW - 1; i++) {
-		for (int j = 1; j < COLUMN - 1; j++) {
-			if (block[i + 1][j + 1] != 0) {
-				/*
-				删除界面图片信息（未完成）
-				*/
+	//for (int i = 1; i < ROW - 1; i++) {
+	//	for (int j = 1; j < COLUMN - 1; j++) {
+	//		if (block[i + 1][j + 1] != 0) {
+	//			/*
+	//			删除界面图片信息（未完成）
+	//			*/
 
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 	/*
 	然后重新贴图
 
