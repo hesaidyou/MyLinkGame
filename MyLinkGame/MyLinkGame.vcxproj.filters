@@ -70,6 +70,12 @@
     <ClInclude Include="forget.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PaiHangBang.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LLKAddDlg.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyLinkGame.cpp">
@@ -115,6 +121,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="forget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PaiHangBang.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LLKAddDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

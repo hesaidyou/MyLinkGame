@@ -76,6 +76,8 @@ public:
 	int m_score; //记录分数
 	int m_time;
 	int modal;
+	int hard_rate;
+
 private:
 	CPtrArray m_btnGroup; //Button 组
 	BOOL m_bPlaying;
@@ -114,6 +116,8 @@ public:
 	afx_msg void OnStnClickedStatic12();
 	BOOL IsWin();
 	afx_msg void OnBnClickedButtontesting();
+	afx_msg void OnBnClickedPahhangceshi();
+	afx_msg void OnBnClickedWintest();
 };
 
 
