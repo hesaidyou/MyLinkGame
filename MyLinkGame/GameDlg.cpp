@@ -12,7 +12,9 @@
 #include <time.h>
 #include <algorithm>
 
+#include "LLKAddDlg.h"
 #include "BlockButton.h"
+#include "PaiHangBang.h"
 
 #define IDC_BLOCK 10000
 
@@ -66,6 +68,8 @@ BEGIN_MESSAGE_MAP(GameDlg, CDialog)
 	ON_STN_CLICKED(IDC_STATIC6, &GameDlg::OnStnClickedStatic6)
 	ON_STN_CLICKED(IDC_STATIC12, &GameDlg::OnStnClickedStatic12)
 	ON_BN_CLICKED(IDC_BUTTONTESTING, &GameDlg::OnBnClickedButtontesting)
+	ON_BN_CLICKED(IDC_PAHHANGCESHI, &GameDlg::OnBnClickedPahhangceshi)
+	ON_BN_CLICKED(IDC_WinTest, &GameDlg::OnBnClickedWintest)
 END_MESSAGE_MAP()
 
 
@@ -769,6 +773,7 @@ void GameDlg::Recreate() {
 			k++;
 		}
 	}
+
 	srand((unsigned)time(NULL));
 	for (i = 1; i<(ROW - 2)*(COLUMN - 2); i++) {
 		if (b[i] == 0)
@@ -960,6 +965,7 @@ BOOL GameDlg::OnInitDialog()
 	CRect temprect(0, 0, 1280, 1000);
 	CWnd::SetWindowPos(NULL, 0, 0, temprect.Width(), temprect.Height(), SWP_NOZORDER | SWP_NOMOVE);
 
+	hard_rate = 2;
 	m_score = 0;
 	m_time = 150;
 
@@ -1084,14 +1090,15 @@ BOOL GameDlg::IsWin()
 	{
 		KillTimer(1);
 		MessageBox(_T("Game Over !"), _T("时间结束"));
-		m_time = 30;
+		m_time = 150;
 		//清除桌面的按钮
 		for (int i = 0; i < m_btnGroup.GetSize(); i++)
 			delete (CBlockButton *)m_btnGroup.GetAt(i);
 		m_btnGroup.RemoveAll();
 		//记录分数
-		/*CLLKAddDlg addData;
-		addData.DoModal();*/
+		m_score += m_time;
+		CLLKAddDlg addData;
+		addData.DoModal();
 		return FALSE;
 	}
 
@@ -1119,12 +1126,14 @@ BOOL GameDlg::IsWin()
 			for (int i = 0; i < m_btnGroup.GetSize(); i++)
 				delete (CBlockButton *)m_btnGroup.GetAt(i);
 
-			/*CLLKAddDlg addData;
-			addData.DoModal();*/
-
+			//记录分数
+			CLLKAddDlg addData;
+			addData.DoModal();
 			return true;
 		}
 	}
+
+	return false;
 }
 
 
@@ -1257,7 +1266,24 @@ void GameDlg::OnBnClickedButtontesting()
 		m_bPlaying = true;
 
 		SetTimer(1, 1000, NULL);
-	}
 
-	
+	}
+}
+
+
+void GameDlg::OnBnClickedPahhangceshi()
+{
+	PaiHangBang paihang;
+	paihang.DoModal();
+}
+
+
+void GameDlg::OnBnClickedWintest()
+{
+	for (int i = 1; i < ROW - 1; i++) {
+		for (int j = 1; j < COLUMN - 1; j++)
+		{
+			block[i][j] = 0;
+		}
+	}
 }
