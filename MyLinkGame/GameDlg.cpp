@@ -1034,6 +1034,9 @@ void GameDlg::OnStnClickedStatic4()//Ã· æ
 			}
 		}
 	}
+
+	m_time = m_time - 10;
+	m_ctrlProgress.OffsetPos(-10);
 }
 
 void GameDlg::OnStnClickedStatic5() //÷ÿ≈≈
